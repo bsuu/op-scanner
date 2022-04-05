@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "403626094045",
+    "firebase_url": "https://scanner-op-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "scanner-op",
+    "storage_bucket": "scanner-op.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:403626094045:android:e1c3a654591b597af51a34",
+        "android_client_info": {
+          "package_name": "me.scanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "403626094045-nhkfjr4qcd5f5gc3fr8ttibhvcl3o7ql.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5xM0s_MzG2IZHviXNdK8nMaZ1ZIZRgaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403626094045-nhkfjr4qcd5f5gc3fr8ttibhvcl3o7ql.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
