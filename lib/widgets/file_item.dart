@@ -1,6 +1,7 @@
 import 'package:flag/flag_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:skan/widgets/file_item_slider.dart';
 
 import '../data/scan_file.dart';
 import '../octicons_icons.dart';
@@ -8,19 +9,26 @@ import '../skan_colors.dart';
 
 class FileItemState extends State<FileItem> {
 
-  bool          infoTabHidden   = true;
-  double        infoTabSize     = 3;
-  List<Color>   infoTabColor    = [Colors.red];
+  FileItemSliderType state = FileItemSliderType.HIDDEN;
 
   void _infoTab() {
     setState(() {
-      infoTabHidden = !infoTabHidden;
-      print(infoTabHidden);
+      if (state != FileItemSliderType.INFO) {
+        state = FileItemSliderType.INFO;
+      } else {
+        state = FileItemSliderType.HIDDEN;
+      }
     });
   }
 
-  double _infoTabSize() {
-    return (infoTabHidden) ? 0 : 3;
+  void _progressTab() {
+    setState(() {
+      if (state != FileItemSliderType.PROGRESS) {
+        state = FileItemSliderType.PROGRESS;
+      } else {
+        state = FileItemSliderType.HIDDEN;
+      }
+    });
   }
 
   @override
@@ -29,24 +37,7 @@ class FileItemState extends State<FileItem> {
       margin: const EdgeInsets.only(bottom: 14),
       child: Stack(
         children: [
-          AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.bounceInOut,
-            height: 75 + _infoTabSize(),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Colors.red,
-                  Colors.green
-                ]
-              ),
-                color: Colors.red,
-                borderRadius: BorderRadius.all(Radius.circular(18))
-            )
-          ),
+          FileItemSlider(state: state),
           Container(
               constraints: const BoxConstraints(maxHeight: 75),
               padding: const EdgeInsets.all(14),
@@ -91,10 +82,16 @@ class FileItemState extends State<FileItem> {
                             color: base_icon_color),
                         onTap: _infoTab,
                       ),
-                      Icon(Octicons.beaker_16,
-                          color: getIconColor(widget.transcription)),
-                      Icon(Octicons.paper_airplane_16,
-                          color: getIconColor(widget.upload)),
+                      GestureDetector(
+                        child: Icon(Octicons.beaker_16,
+                            color: getIconColor(widget.transcription)),
+                        onTap: _progressTab,
+                      ),
+                      GestureDetector(
+                        child: Icon(Octicons.paper_airplane_16,
+                            color: getIconColor(widget.upload)),
+                        onTap: _progressTab,
+                      )
                     ],
                   ))
                 ],
