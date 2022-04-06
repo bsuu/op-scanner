@@ -57,7 +57,7 @@ class ProfileWidgetState extends State<ProfileWidget> {
                         final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                         provider.logout();
                       },
-                      icon: Icon(Octicons.sign_out_16, size: 38, color: error_color)),
+                      icon: Icon(Octicons.sign_out_16, size: 34, color: error_color)),
                 ],
               )
             )
