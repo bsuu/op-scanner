@@ -7,7 +7,6 @@ import 'package:skan/provider/google_sign_in.dart';
 import 'package:skan/widgets/login_widget.dart';
 import 'package:skan/widgets/option_item.dart';
 import 'package:skan/widgets/options_widget.dart';
-import 'package:skan/widgets/toggle_switch.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 import '../skan_colors.dart';
