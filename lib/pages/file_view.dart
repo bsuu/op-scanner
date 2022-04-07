@@ -27,7 +27,7 @@ class FileViewState extends State<FileView> {
   }
 
   Future loadLocalData() async {
-    final files = await ScanFileStorage.getFiles() ?? [];
+    final files = await ScanFileStorage?.getFiles() ?? [];
     setState(() {
       this.files = files;
     });
