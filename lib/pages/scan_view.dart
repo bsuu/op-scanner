@@ -1,4 +1,6 @@
 import 'dart:io';
+
+import 'package:camera/camera.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:reorderables/reorderables.dart';
@@ -9,6 +11,7 @@ import 'package:skan/widgets/scan_image_widget.dart';
 
 class ScanViewState extends State<ScanView> {
   List<String> tempImages = [];
+
 
   void _reoder(int oldIndex, int newIndex) {
     setState(() {

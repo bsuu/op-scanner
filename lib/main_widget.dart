@@ -1,3 +1,6 @@
+
+import 'package:camera/camera.dart';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +13,8 @@ import 'package:skan/widgets/navbar_widget.dart';
 import 'octicons_icons.dart';
 
 class MainWidget extends StatefulWidget {
+
+
   const MainWidget({Key? key}) : super(key: key);
 
   @override
