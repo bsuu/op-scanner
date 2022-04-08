@@ -9,15 +9,18 @@ import '../skan_colors.dart';
 
 class CameraViewState extends State<CameraView> {
   CameraController? cameraController;
-  late Future<void> _initController;
+  Future<void>? _initController;
+
+  Future<void> _loadCamera() async {
+    final cameras = await availableCameras();
+    cameraController = CameraController(cameras.first, ResolutionPreset.ultraHigh);
+    _initController = cameraController!.initialize();
+  }
+
 
   @override
   void initState() {
     super.initState();
-
-    cameraController = CameraController(camera, ResolutionPreset.high);
-
-    _initController = cameraController!.initialize();
   }
 
   @override
@@ -46,8 +49,9 @@ class CameraViewState extends State<CameraView> {
       child: Column(
         children: [
           FutureBuilder(
-              future: _initController,
+              future: _loadCamera(),
               builder: (context, snapshot) {
+                print(snapshot);
                 if (snapshot.connectionState == ConnectionState.done) {
                   return ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -73,6 +77,7 @@ class CameraViewState extends State<CameraView> {
 }
 
 class CameraView extends StatefulWidget {
+
   const CameraView({Key? key}) : super(key: key);
 
   @override

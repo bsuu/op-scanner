@@ -8,29 +8,19 @@ import 'package:skan/main_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:skan/provider/google_sign_in.dart';
 
-late final camera;
-
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  final cameras = await availableCameras();
-  camera = cameras.first;
-
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(const ScanApp());
+  runApp(ScanApp());
 }
 
 class ScanApp extends StatelessWidget {
+
   const ScanApp({Key? key}) : super(key: key);
 
-  // SystemChrome.setSystemUIOverlayStyle(
-  //   SystemUiOverlayStyle(
-  //   statusBarColor: Colors.transparent
-  //   //color set to transperent or set your own color
-  //   )
-  // );
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +28,8 @@ class ScanApp extends StatelessWidget {
     return  ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
       child: MaterialApp(
-        home: MainWidget(),
+        home: MainWidget(
+        ),
         debugShowCheckedModeBanner: false,
       )
     );
