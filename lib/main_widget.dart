@@ -2,7 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:skan/pages/camera_view.dart';
+import 'package:skan/pages/scan_view.dart';
 import 'package:skan/pages/file_view.dart';
 import 'package:skan/pages/profile_view.dart';
 import 'package:skan/widgets/navbar_widget.dart';
@@ -38,7 +38,7 @@ class MainWidgetState extends State<MainWidget> {
               controller: _controller,
               children: [
                 FileView(),
-                CameraView(),
+                ScanView(),
                 ProfileView(),
               ],
                 onPageChanged: changeIndexState,
