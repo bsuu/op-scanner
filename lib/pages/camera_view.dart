@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:skan/data/scan_file_storage.dart';
 import 'package:skan/main.dart';
 import 'package:skan/octicons_icons.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 
-import '../skan_colors.dart';
 
 class CameraViewState extends State<CameraView> {
   CameraController? cameraController;
@@ -40,7 +40,7 @@ class CameraViewState extends State<CameraView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(color: background),
+      decoration: BoxDecoration(color: AdaptiveTheme.of(context).theme.backgroundColor),
       padding:
           EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + 15),
       child: Column(
@@ -62,7 +62,7 @@ class CameraViewState extends State<CameraView> {
                 child: Icon(
                   Octicons.circle_16,
                   size: 48,
-                  color: Colors.red,
+                  color: AdaptiveTheme.of(context).theme.highlightColor,
                 ),
                 onTap: _takePicture,
               ))
