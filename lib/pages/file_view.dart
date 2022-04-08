@@ -1,5 +1,4 @@
-
-
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:skan/data/scan_file.dart';
 import 'package:skan/data/scan_file_storage.dart';
@@ -36,7 +35,7 @@ class FileViewState extends State<FileView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: const BoxDecoration(color: background),
+        decoration: BoxDecoration(color: AdaptiveTheme.of(context).theme.backgroundColor),
         padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
         child: ListView(
           padding: const EdgeInsets.all(15),

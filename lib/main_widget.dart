@@ -1,4 +1,7 @@
+
 import 'package:camera/camera.dart';
+
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,9 +53,9 @@ class MainWidgetState extends State<MainWidget> {
                 controller: _controller,
                 currentIndex: selectedIndex,
                 items: [
-                  Icon(Octicons.home_16),
-                  Icon(Octicons.video_16),
-                  Icon(Octicons.person_16),],
+                  Icon(Octicons.home_16, color: AdaptiveTheme.of(context).theme.iconTheme.color,),
+                  Icon(Octicons.video_16, color: AdaptiveTheme.of(context).theme.iconTheme.color,),
+                  Icon(Octicons.person_16, color: AdaptiveTheme.of(context).theme.iconTheme.color,),],
                 onTap: changeIndexState,
 
             ),

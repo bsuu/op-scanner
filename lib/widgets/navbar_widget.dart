@@ -1,5 +1,6 @@
 
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +19,9 @@ class NavbarState extends State<Navbar> {
         maxHeight: 46
       ),
       margin: EdgeInsets.only(bottom: 14, left: 48, right: 48),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(8)),
-        color: Colors.yellow,
+        color: AdaptiveTheme.of(context).theme.bottomAppBarColor,
       ),
       child: Stack(
         children: [
@@ -32,7 +33,7 @@ class NavbarState extends State<Navbar> {
             height: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(8)),
-              color: Colors.red,
+              color: AdaptiveTheme.of(context).theme.highlightColor,
             ),
           ),
           Container(

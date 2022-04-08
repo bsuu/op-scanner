@@ -8,15 +8,15 @@ import 'package:skan/widgets/login_widget.dart';
 import 'package:skan/widgets/option_item.dart';
 import 'package:skan/widgets/options_widget.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 
-import '../skan_colors.dart';
 import '../widgets/profile_widget.dart';
 
 class ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: const BoxDecoration(color: background),
+        decoration: BoxDecoration(color: AdaptiveTheme.of(context).theme.backgroundColor),
         padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
         child: ListView(
           padding: const EdgeInsets.all(15),

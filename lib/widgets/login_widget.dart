@@ -1,11 +1,10 @@
-
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/octicons_icons.dart';
 
 import '../provider/google_sign_in.dart';
-import '../skan_colors.dart';
 
 class LoginWidgetState extends State<LoginWidget> {
   @override
@@ -18,9 +17,9 @@ class LoginWidgetState extends State<LoginWidget> {
       child: Container(
       padding: const EdgeInsets.all(14),
       margin: const EdgeInsets.only(bottom: 14),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(16)),
-        color: file_item_background,
+        color: AdaptiveTheme.of(context).theme.primaryColor,
       ),
       child: Row(
         children: [
@@ -30,8 +29,8 @@ class LoginWidgetState extends State<LoginWidget> {
             crossAxisAlignment: WrapCrossAlignment.center,
             spacing: 15,
             children: [
-              Icon(FontAwesomeIcons.google, size: 24, color: first_font_color),
-              Text("Zaloguj się przez Google", style: TextStyle(fontSize: 18, color: first_font_color), textAlign: TextAlign.center,)
+              Icon(FontAwesomeIcons.google, size: 24, color: AdaptiveTheme.of(context).theme.iconTheme.color),
+              Text("Zaloguj się przez Google", style: AdaptiveTheme.of(context).theme.textTheme.headline1, textAlign: TextAlign.center,)
             ],
           ))
 
