@@ -1,8 +1,6 @@
-
-
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:skan/skan_colors.dart';
 
 enum FileItemSliderType {
 
@@ -29,7 +27,7 @@ class FileItemSliderState extends State<FileItemSlider> {
             gradient: LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
-                colors: widget.colors,
+                colors: [AdaptiveTheme.of(context).theme.primaryColor, AdaptiveTheme.of(context).theme.primaryColor]
             ),
             borderRadius: BorderRadius.all(Radius.circular(18))
         )
@@ -41,9 +39,8 @@ class FileItemSliderState extends State<FileItemSlider> {
 class FileItemSlider extends StatefulWidget {
 
   FileItemSliderType state;
-  List<Color> colors;
 
-  FileItemSlider({Key? key, required this.state, this.colors = const [file_item_background, file_item_background]}) : super(key: key);
+  FileItemSlider({Key? key, required this.state}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => FileItemSliderState();

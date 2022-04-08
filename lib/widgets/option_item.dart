@@ -1,11 +1,10 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 
 import '../octicons_icons.dart';
-import '../skan_colors.dart';
 
 
 class OptionItemState extends State<OptionItem> {
@@ -14,12 +13,12 @@ class OptionItemState extends State<OptionItem> {
     return Container(
       padding: EdgeInsets.only(left: 8),
       decoration: BoxDecoration(
-        color: file_item_background,
+        color: AdaptiveTheme.of(context).theme.primaryColor,
         borderRadius: BorderRadius.all(Radius.circular(8))
       ),
       child: Row(
         children: [
-          Text(widget.option_name, style: TextStyle(color: first_font_color)),
+          Text(widget.option_name, style: AdaptiveTheme.of(context).theme.textTheme.bodyText1),
           Expanded(child: Wrap(
             alignment: WrapAlignment.end,
             children: [
@@ -27,13 +26,15 @@ class OptionItemState extends State<OptionItem> {
                   totalSwitches: 2,
                   minWidth: 55,
                   minHeight: 30,
+                  onToggle: (index) {
+                    if (index == 0) {
+                      AdaptiveTheme.of(context).setLight();
+                    } else
+                      AdaptiveTheme.of(context).setDark();
+                  },
                   customIcons: [
-                    Icon(Octicons.sun_16, color: Colors.orange, size: 16),
-                    Icon(Octicons.moon_16, color: first_font_color, size: 16,)
-                  ],
-                  activeBgColors: [
-                    [first_font_color],
-                    [background]
+                    Icon(Octicons.sun_16, color: Colors.orange, size: 16,),
+                    Icon(Octicons.moon_16, color: AdaptiveTheme.of(context).theme.primaryColor, size: 16,)
                   ],
                 )
             ],

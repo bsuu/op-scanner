@@ -1,11 +1,12 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flag/flag_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:skan/themes.dart';
 import 'package:skan/widgets/file_item_slider.dart';
 
 import '../data/scan_file.dart';
 import '../octicons_icons.dart';
-import '../skan_colors.dart';
 
 class FileItemState extends State<FileItem> {
 
@@ -43,7 +44,7 @@ class FileItemState extends State<FileItem> {
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
-                color: file_item_background,
+                color: AdaptiveTheme.of(context).theme.primaryColor,
               ),
               child: Row(
                 children: [
@@ -52,17 +53,13 @@ class FileItemState extends State<FileItem> {
                     children: [
                       Text(
                         widget.file_name,
-                        style: const TextStyle(
-                            fontSize: 18, color: first_font_color),
+                        style: AdaptiveTheme.of(context).theme.textTheme.headline1,
                       ),
                       Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(widget.file_type,
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    color: second_font_color,
-                                    height: 1.8)),
+                                style: AdaptiveTheme.of(context).theme.textTheme.bodyText1),
                             if (widget.file_lang != null)
                               Flag.fromString(widget.file_lang,
                                   height: 14,
@@ -78,18 +75,18 @@ class FileItemState extends State<FileItem> {
                     spacing: 20,
                     children: [
                       GestureDetector(
-                        child: const Icon(Octicons.info_16,
-                            color: base_icon_color),
+                        child: Icon(Octicons.info_16,
+                            color: AdaptiveTheme.of(context).theme.iconTheme.color),
                         onTap: _infoTab,
                       ),
                       GestureDetector(
                         child: Icon(Octicons.beaker_16,
-                            color: getIconColor(widget.transcription)),
+                            color: getIconColor(widget.transcription).color),
                         onTap: _progressTab,
                       ),
                       GestureDetector(
                         child: Icon(Octicons.paper_airplane_16,
-                            color: getIconColor(widget.upload)),
+                            color: getIconColor(widget.upload).color),
                         onTap: _progressTab,
                       )
                     ],
@@ -101,14 +98,14 @@ class FileItemState extends State<FileItem> {
     );
   }
 
-  Color getIconColor(STATUS status) {
+  IconThemeData getIconColor(STATUS status) {
     if (status == STATUS.RUNNING) {
-      return transcription_icon_color;
+      return CustomThemes().getIconColor(status, context);
     }
     if (status == STATUS.DONE) {
-      return done_icon_color;
+      return CustomThemes().getIconColor(status, context);
     }
-    return base_icon_color;
+    return CustomThemes().getIconColor(status, context);
   }
 }
 
