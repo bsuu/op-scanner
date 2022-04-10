@@ -3,16 +3,15 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/navbar_provider.dart';
 
 class NavbarState extends State<Navbar> {
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    print("rebuild");
     double size = ((MediaQuery.of(context).size.width - 96) / 3);
     return Container(
       constraints: BoxConstraints(
@@ -28,7 +27,7 @@ class NavbarState extends State<Navbar> {
           AnimatedContainer(
             duration: Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            margin: EdgeInsets.only(left: size * widget.currentIndex),
+            margin: EdgeInsets.only(left: size * Provider.of<NavbarProvider>(context).currentIndex),
             width: size,
             height: double.infinity,
             decoration: BoxDecoration(
@@ -58,17 +57,12 @@ class NavbarState extends State<Navbar> {
 }
 
 class Navbar extends StatefulWidget {
-
-  final PageController controller;
   final List<Widget> items;
-  final int currentIndex;
-  var onTap;
+  final Function onTap;
 
-  Navbar({Key? key,
-    required this.controller,
+  const Navbar({Key? key,
     required this.items,
-    required this.currentIndex,
-    this.onTap
+    required this.onTap
   }) : super(key: key);
 
   @override

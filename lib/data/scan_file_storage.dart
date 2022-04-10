@@ -32,6 +32,12 @@ class ScanFileStorage {
     await _storage.write(key: _files_key, value: json.encode(files));
   }
 
+  static Future addTFiles(ScanFile sf) async {
+    List<ScanFile> currentTemp = await getFiles() ?? [];
+    currentTemp.add(sf);
+    await setFiles(currentTemp);
+  }
+
   static Future<List<ScanFile>?> getFiles() async {
     final value = await _storage.read(key: _files_key);
     if (value == null) {

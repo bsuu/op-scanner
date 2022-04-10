@@ -8,12 +8,19 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:skan/provider/google_sign_in.dart';
+import 'package:skan/provider/navbar_provider.dart';
 import 'package:skan/themes.dart';
+import 'package:skan/widgets/navbar_widget.dart';
+
+late final camera;
 
 void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  final cameras = await availableCameras();
+  camera = cameras.first;
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(ScanApp());
@@ -31,15 +38,19 @@ class ScanApp extends StatelessWidget {
       light: CustomThemes().light,
       dark: CustomThemes().dark,
       initial: AdaptiveThemeMode.system,
-      builder: (theme, darkTheme) => ChangeNotifierProvider(
-          create: (context) => GoogleSignInProvider(),
-          child: MaterialApp(
-            home: MainWidget(),
-            debugShowCheckedModeBanner: false,
-            theme: theme,
-            darkTheme: darkTheme,
-          )
-      ),
+      builder: (theme, darkTheme) => MultiProvider(
+          providers: [
+            ChangeNotifierProvider<GoogleSignInProvider>(create: (_) => GoogleSignInProvider()),
+            ChangeNotifierProvider<NavbarProvider>(create: (_) => NavbarProvider(),)
+          ],
+        child: MaterialApp(
+          home: const MainWidget(),
+          debugShowCheckedModeBanner: false,
+          // showPerformanceOverlay: true,
+          theme: theme,
+          darkTheme: darkTheme,
+        ),
+      )
     );
 
   }

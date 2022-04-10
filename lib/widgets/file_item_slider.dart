@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 enum FileItemSliderType {
-
   HIDDEN(0),
   PROGRESS(3),
   INFO(55);
