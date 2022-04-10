@@ -26,33 +26,41 @@ class FileViewState extends State<FileView> {
   }
 
   Future loadLocalData() async {
-    final files = await ScanFileStorage?.getFiles() ?? [];
-    setState(() {
-      this.files = files;
-    });
+    files = await ScanFileStorage?.getFiles() ?? [];
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    print("rebuild file");
     return Container(
         decoration: BoxDecoration(color: AdaptiveTheme.of(context).theme.backgroundColor),
         padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
-        child: ListView(
+        child: ListView.builder(
+          itemCount: files.length,
+          itemBuilder: (ctx, index) {
+            return FileItem(
+                file_name: files[index].name,
+                file_type: files[index].type,
+                transcription: files[index].transcription,
+                upload: files[index].cloud)
+            ;
+          },
           padding: const EdgeInsets.all(15),
-          children: [
-            for (ScanFile sf in files) FileItem(file_name: sf.name, file_type: sf.type, transcription: sf.transcription, upload: sf.cloud),
-            FileItem(file_name: "siema1", file_type: "photo / text", file_lang: "PL", transcription: STATUS.NONE, upload: STATUS.DONE),
-            FileItem(file_name: "siema1", file_type: "type 1", file_lang: "BR", transcription: STATUS.DONE, upload: STATUS.RUNNING),
-            FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
-            FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.RUNNING, upload: STATUS.NONE),
-            FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
-            FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
-            FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
-            FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
-            FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
-            FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
-            FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
-          ],
+          // children: [
+          //   for (ScanFile sf in files) ,
+          //   FileItem(file_name: "siema1", file_type: "photo / text", file_lang: "PL", transcription: STATUS.NONE, upload: STATUS.DONE),
+          //   FileItem(file_name: "siema1", file_type: "type 1", file_lang: "BR", transcription: STATUS.DONE, upload: STATUS.RUNNING),
+          //   FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
+          //   FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.RUNNING, upload: STATUS.NONE),
+          //   FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
+          //   FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
+          //   FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
+          //   FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
+          //   FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
+          //   FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
+          //   FileItem(file_name: "siema1", file_type: "type 1", transcription: STATUS.NONE, upload: STATUS.RUNNING),
+          // ],
         )
     );
   }

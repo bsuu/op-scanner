@@ -12,9 +12,10 @@ class CameraViewState extends State<CameraView> {
   Future<void>? _initController;
 
   Future<void> _loadCamera() async {
-    final cameras = await availableCameras();
-    cameraController = CameraController(cameras.first, ResolutionPreset.ultraHigh);
+    cameraController = CameraController(camera, ResolutionPreset.ultraHigh);
     _initController = cameraController!.initialize();
+
+    await _initController;
   }
 
 
@@ -36,6 +37,12 @@ class CameraViewState extends State<CameraView> {
 
       final image = await cameraController!.takePicture();
       ScanFileStorage.addTempImageLocation(image.path);
+
+      Navigator.of(context).pop();
+
+      setState(() {
+
+      });
 
     } catch (e) { print(e); }
   }
