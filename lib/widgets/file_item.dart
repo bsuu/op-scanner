@@ -41,7 +41,7 @@ class FileItemState extends State<FileItem> {
           FileItemSlider(state: state),
           Container(
               constraints: const BoxConstraints(maxHeight: 75),
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
                 color: AdaptiveTheme.of(context).theme.primaryColor,

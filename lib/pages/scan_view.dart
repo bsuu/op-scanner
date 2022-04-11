@@ -72,12 +72,28 @@ class ScanViewState extends State<ScanView> {
                     key: ValueKey('Enable drag'))
               ],
               onReorder: _reoder),
+          Container(
+            padding: EdgeInsets.only(top: 10),
+            child: TextField(
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AdaptiveTheme.of(context).theme.highlightColor),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                hintText: 'Nazwa pliku',
+              ),
+            ), 
+            
+          ),
           GestureDetector(
               onTap: () {
                 ScanFile sf = ScanFile(name: "test", type: "test", cloud:  STATUS.NONE, transcription:  STATUS.NONE, files:  tempImages);
                 ScanFileStorage.addTFiles(sf);
                 tempImages = [];
                 ScanFileStorage.setTempImageLocation(tempImages);
+                setState(() {
+
+                });
               },
               child: Container(
                 padding: const EdgeInsets.all(14),

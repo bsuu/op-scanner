@@ -40,10 +40,15 @@ class ScanFileStorage {
 
   static Future<List<ScanFile>?> getFiles() async {
     final value = await _storage.read(key: _files_key);
+    print(value);
     if (value == null) {
       return [];
     }
-    return List<ScanFile>.from(json.decode(value));
+    List<dynamic> elementy = json.decode(value);
+    List<ScanFile> files = [];
+    for (var ele in elementy)
+      files.add(ScanFile.fromJson(ele));
+    return files;
   }
 
 
