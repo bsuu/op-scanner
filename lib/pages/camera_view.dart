@@ -1,7 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:skan/data/scan_file_storage.dart';
+import 'package:provider/provider.dart';
+import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/main.dart';
 import 'package:skan/octicons_icons.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
@@ -11,10 +12,11 @@ class CameraViewState extends State<CameraView> {
   CameraController? cameraController;
   Future<void>? _initController;
 
+  late final ScanFileStorage _provider;
+
   Future<void> _loadCamera() async {
     cameraController = CameraController(camera, ResolutionPreset.ultraHigh);
     _initController = cameraController!.initialize();
-
     await _initController;
   }
 
@@ -22,6 +24,7 @@ class CameraViewState extends State<CameraView> {
   @override
   void initState() {
     super.initState();
+    _provider = Provider.of<ScanFileStorage>(context, listen: false);
   }
 
   @override
@@ -36,14 +39,9 @@ class CameraViewState extends State<CameraView> {
       await _initController;
 
       final image = await cameraController!.takePicture();
-      ScanFileStorage.addTempImageLocation(image.path);
+      _provider.addTempImageLocation(image.path);
 
       Navigator.of(context).pop();
-
-      setState(() {
-
-      });
-
     } catch (e) { print(e); }
   }
 

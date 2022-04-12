@@ -9,6 +9,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:skan/provider/google_sign_in.dart';
 import 'package:skan/provider/navbar_provider.dart';
+import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/themes.dart';
 import 'package:skan/widgets/navbar_widget.dart';
 
@@ -22,8 +23,9 @@ void main() async {
   final cameras = await availableCameras();
   camera = cameras.first;
 
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  runApp(ScanApp());
+  runApp(const ScanApp());
 }
 
 class ScanApp extends StatelessWidget {
@@ -41,7 +43,8 @@ class ScanApp extends StatelessWidget {
       builder: (theme, darkTheme) => MultiProvider(
           providers: [
             ChangeNotifierProvider<GoogleSignInProvider>(create: (_) => GoogleSignInProvider()),
-            ChangeNotifierProvider<NavbarProvider>(create: (_) => NavbarProvider(),)
+            ChangeNotifierProvider<NavbarProvider>(create: (_) => NavbarProvider()),
+            ChangeNotifierProvider<ScanFileStorage>(create: (_) => ScanFileStorage())
           ],
         child: MaterialApp(
           home: const MainWidget(),
