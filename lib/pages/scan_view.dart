@@ -9,6 +9,7 @@ import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/octicons_icons.dart';
 import 'package:skan/pages/camera_view.dart';
 import 'package:skan/widgets/scan_image_widget.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class ScanViewState extends State<ScanView> {
 
@@ -108,6 +109,43 @@ class ScanViewState extends State<ScanView> {
                     ),
                   ),
 
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 14),
+                  margin: const EdgeInsets.only(top: 14),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                    color: AdaptiveTheme
+                        .of(context)
+                        .theme
+                        .primaryColor,
+                  ),
+                  child: Row(
+                    children: [
+                      Text('Nie wiem w sumie co tu lol', style: AdaptiveTheme.of(context).theme.textTheme.bodyText1,),
+                      Expanded(child: Wrap(
+                        alignment: WrapAlignment.end,
+                        children: [
+                          ToggleSwitch(
+                            totalSwitches: 2,
+                            minWidth: 55,
+                            minHeight: 30,
+                            onToggle: (index) {
+                              if (index == 0) {
+
+                              } else {
+
+                              }
+                            },
+                            customIcons: [
+                              Icon(Octicons.heart_16, color: Colors.red, size: 16,),
+                              Icon(Octicons.heart_fill_16, color: AdaptiveTheme.of(context).theme.primaryColor, size: 16,)
+                            ],
+                          )
+                        ],
+                      )),
+                    ],
+                  ),
                 ),
                 GestureDetector(
                     onTap: () async {

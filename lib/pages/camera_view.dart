@@ -6,7 +6,7 @@ import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/main.dart';
 import 'package:skan/octicons_icons.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-
+import 'package:toggle_switch/toggle_switch.dart';
 
 class CameraViewState extends State<CameraView> {
   CameraController? cameraController;
@@ -53,6 +53,22 @@ class CameraViewState extends State<CameraView> {
           EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + 15),
       child: Column(
         children: [
+          ToggleSwitch(
+            totalSwitches: 2,
+            minWidth: 55,
+            minHeight: 25,
+            onToggle: (index) {
+              if (index == 0) {
+                cameraController?.setFlashMode(FlashMode.off);
+              } else {
+                cameraController?.setFlashMode(FlashMode.always);
+              }
+            },
+            customIcons: [
+              Icon(Octicons.moon_16, color: Colors.black, size: 16,),
+              Icon(Octicons.light_bulb_16, color: Colors.orange, size: 16,)
+            ],
+          ),
           FutureBuilder(
               future: _loadCamera(),
               builder: (context, snapshot) {

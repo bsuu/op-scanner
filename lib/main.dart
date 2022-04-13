@@ -47,7 +47,7 @@ class ScanApp extends StatelessWidget {
             ChangeNotifierProvider<ScanFileStorage>(create: (_) => ScanFileStorage())
           ],
         child: MaterialApp(
-          home: const MainWidget(),
+          home: MainWidget(),
           debugShowCheckedModeBanner: false,
           // showPerformanceOverlay: true,
           theme: theme,

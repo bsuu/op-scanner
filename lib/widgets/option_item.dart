@@ -29,8 +29,9 @@ class OptionItemState extends State<OptionItem> {
                   onToggle: (index) {
                     if (index == 0) {
                       AdaptiveTheme.of(context).setLight();
-                    } else
+                    } else {
                       AdaptiveTheme.of(context).setDark();
+                    }
                   },
                   customIcons: [
                     Icon(Octicons.sun_16, color: Colors.orange, size: 16,),
