@@ -27,6 +27,7 @@ class ScanFileStorage extends ChangeNotifier {
     if (value == null) {
       return [];
     }
+    print(value);
     return List<String>.from(json.decode(value));
   }
 

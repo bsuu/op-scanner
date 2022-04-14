@@ -3,24 +3,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 enum FileItemSliderType {
-  HIDDEN(0),
-  PROGRESS(3),
-  INFO(55);
-
-  const FileItemSliderType(this.size);
-  final double size;
+  HIDDEN,
+  PROGRESS,
+  INFO,
 }
 
 class FileItemSliderState extends State<FileItemSlider> {
 
-
+  var sizes = {
+    FileItemSliderType.HIDDEN: 0,
+    FileItemSliderType.PROGRESS: 5,
+    FileItemSliderType.INFO: 75,
+  };
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInQuad,
-        height: 75 + widget.state.size,
+        height: 75.0 + sizes[widget.state]!,
         width: double.infinity,
         decoration: BoxDecoration(
             gradient: LinearGradient(

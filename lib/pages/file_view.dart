@@ -41,6 +41,7 @@ class FileViewState extends State<FileView> {
             if (snapshot.connectionState != ConnectionState.done) {
               return const CircularProgressIndicator();
             } else {
+              print(snapshot);
               List<ScanFile> files = snapshot.data as List<ScanFile>;
               return ListView.builder(
                   itemCount: files.length,
