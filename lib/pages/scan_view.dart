@@ -49,6 +49,7 @@ class ScanViewState extends State<ScanView> {
         if (snapshot.connectionState != ConnectionState.done) {
           return const CircularProgressIndicator();
         } else {
+          print(snapshot);
           return Container(
               decoration: BoxDecoration(
                   color: AdaptiveTheme

@@ -6,8 +6,11 @@ import 'package:json_annotation/json_annotation.dart';
 part 'scan_file.g.dart';
 
 enum STATUS {
+  @JsonValue(1)
   RUNNING,
+  @JsonValue(2)
   DONE,
+  @JsonValue(3)
   NONE
 }
 

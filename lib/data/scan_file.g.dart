@@ -25,7 +25,7 @@ Map<String, dynamic> _$ScanFileToJson(ScanFile instance) => <String, dynamic>{
     };
 
 const _$STATUSEnumMap = {
-  STATUS.RUNNING: 'RUNNING',
-  STATUS.DONE: 'DONE',
-  STATUS.NONE: 'NONE',
+  STATUS.RUNNING: 1,
+  STATUS.DONE: 2,
+  STATUS.NONE: 3,
 };
