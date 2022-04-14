@@ -8,7 +8,8 @@ import 'package:skan/data/scan_file.dart';
 import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/octicons_icons.dart';
 import 'package:skan/pages/camera_view.dart';
-import 'package:skan/widgets/scan_image_widget.dart';
+import 'package:skan/widgets/scan/scan_image_preview.dart';
+import 'package:skan/widgets/scan/scan_image_widget.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class ScanViewState extends State<ScanView> {
@@ -61,39 +62,7 @@ class ScanViewState extends State<ScanView> {
                   .viewPadding
                   .top, left: 8, right: 8),
               child: SingleChildScrollView(child: Column(children: [
-                ReorderableWrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      for (String img in snapshot.data as List<String>)
-                        ScanImageWidget(
-                          child: Image.file(
-                            File(img),
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ReorderableWidget(
-                          child: ScanImageWidget(
-                            border: true,
-                            child: GestureDetector(
-                              child: Icon(
-                                Octicons.plus_16,
-                                size: 48,
-                              ),
-                              onTap: () {
-                                print("next page");
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (
-                                            context) => const CameraView()));
-                              },
-                            ),
-                          ),
-                          reorderable: false,
-                          key: ValueKey('Enable drag'))
-                    ],
-                    onReorder: _reorder),
+                ScanImagePreview(reorder: _reorder, reload: loadTempImages, files: snapshot.data as List<String>),
                 Container(
                   padding: EdgeInsets.only(top: 10),
                   child: TextField(
