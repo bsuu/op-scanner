@@ -29,8 +29,8 @@ class CameraViewState extends State<CameraView> {
 
   @override
   void dispose() {
-    cameraController!.dispose();
     super.dispose();
+    cameraController!.dispose();
   }
 
   void _takePicture() async {
@@ -40,8 +40,10 @@ class CameraViewState extends State<CameraView> {
 
       final image = await cameraController!.takePicture();
       _provider.addTempImageLocation(image.path);
+      widget.onPictureTaken(image.path);
 
       Navigator.of(context).pop();
+
     } catch (e) { print(e); }
   }
 
@@ -99,7 +101,9 @@ class CameraViewState extends State<CameraView> {
 
 class CameraView extends StatefulWidget {
 
-  const CameraView({Key? key}) : super(key: key);
+  Function onPictureTaken;
+
+  CameraView({Key? key, required this.onPictureTaken}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => CameraViewState();
