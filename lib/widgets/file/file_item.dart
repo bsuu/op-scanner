@@ -3,10 +3,10 @@ import 'package:flag/flag_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:skan/themes.dart';
-import 'package:skan/widgets/file_item_slider.dart';
+import 'package:skan/widgets/file/file_item_slider.dart';
 
-import '../data/scan_file.dart';
-import '../octicons_icons.dart';
+import '../../data/scan_file.dart';
+import '../../octicons_icons.dart';
 
 class FileItemState extends State<FileItem> {
 
@@ -44,12 +44,13 @@ class FileItemState extends State<FileItem> {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(16)),
-                color: AdaptiveTheme.of(context).theme.primaryColor,
+                color: AdaptiveTheme.of(context).theme.primaryColorDark,
               ),
               child: Row(
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         widget.file_name,

@@ -15,12 +15,21 @@ class ScanImagePreviewState extends State<ScanImagePreview> {
     setState(() {
       widget.files.add(path);
     });
+    widget.add(path);
   }
 
   void viewReorder(int newIndex, int oldIndex) {
     setState(() {
       widget.files.insert(newIndex, widget.files.removeAt(oldIndex));
     });
+    widget.reorder(newIndex, oldIndex);
+  }
+
+  void removeObject(int index) {
+    setState(() {
+      widget.files.removeAt(index);
+    });
+    widget.remove(index);
   }
 
   @override
@@ -29,12 +38,14 @@ class ScanImagePreviewState extends State<ScanImagePreview> {
         spacing: 8,
         runSpacing: 8,
         children: [
-          for (String img in widget.files)
+          for (int i = 0; i < widget.files.length; i++)
             ScanImageWidget(
-              child: Image.file(
-                File(img),
-                fit: BoxFit.fill,
-              ),
+                index: i,
+                child: Image.file(
+                  File(widget.files[i]),
+                  fit: BoxFit.fill,
+                ),
+                onRemove: removeObject
             ),
           ReorderableWidget(
               child: ScanImageWidget(
@@ -51,14 +62,12 @@ class ScanImagePreviewState extends State<ScanImagePreview> {
                             )));
                   },
                 ),
+                onRemove: () {},
               ),
               reorderable: false,
               key: const ValueKey('Enable drag'))
         ],
-        onReorder: (int newIndex, int oldIndex) {
-          viewReorder(newIndex, oldIndex);
-          widget.reorder(newIndex, oldIndex);
-        },);
+        onReorder: viewReorder,);
 
   }
 
@@ -70,8 +79,10 @@ class ScanImagePreview extends StatefulWidget {
 
   var reorder;
   var reload;
+  var remove;
+  var add;
 
-  ScanImagePreview({Key? key, this.files = const [], required this.reorder, required this.reload}) : super(key: key);
+  ScanImagePreview({Key? key, this.files = const [], required this.reorder, required this.reload, required this.remove, required this.add}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => ScanImagePreviewState();

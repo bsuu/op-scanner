@@ -48,10 +48,12 @@ class ScanImageWidgetState extends State<ScanImageWidget> {
             direction: Axis.vertical,
             children: [
               IconButton(
-                  onPressed: () {
-                    print("śmietnik");
-                  },
-                  icon: Icon(Octicons.trash_16)),
+                  icon: Icon(Octicons.trash_16),
+              onPressed: () {
+                widget.onRemove(widget.index);
+                showHide();
+              }),
+
               IconButton(
                   onPressed: showHide,
                   icon: Icon(Octicons.x_16))
@@ -67,7 +69,11 @@ class ScanImageWidget extends StatefulWidget {
   Widget child;
   bool border;
 
-  ScanImageWidget({Key? key, required this.child, this.border = false})
+  int index;
+
+  Function onRemove;
+
+  ScanImageWidget({Key? key, required this.child, this.border = false, required this.onRemove, this.index = 0})
       : super(key: key);
 
   @override
