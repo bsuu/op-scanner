@@ -47,6 +47,8 @@ class CameraViewState extends State<CameraView> {
     } catch (e) { print(e); }
   }
 
+  bool click = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -55,35 +57,33 @@ class CameraViewState extends State<CameraView> {
           EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + 15),
       child: Column(
         children: [
-          ToggleSwitch(
-            totalSwitches: 2,
-            minWidth: 55,
-            minHeight: 25,
-            onToggle: (index) {
-              if (index == 0) {
-                cameraController?.setFlashMode(FlashMode.off);
-              } else {
-                cameraController?.setFlashMode(FlashMode.always);
-              }
-            },
-            customIcons: [
-              Icon(Octicons.moon_16, color: Colors.black, size: 16,),
-              Icon(Octicons.light_bulb_16, color: Colors.orange, size: 16,)
+          Stack(
+            children: <Widget> [
+              FutureBuilder(
+                  future: _loadCamera(),
+                  builder: (context, snapshot) {
+                    print(snapshot);
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        child: CameraPreview(cameraController!),
+                      );
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  }),
+              FloatingActionButton(
+                  focusColor: AdaptiveTheme.of(context).theme.highlightColor,
+                  backgroundColor: Colors.transparent,
+                  child: Icon(click ? Octicons.flash_on_outlined : Octicons.flash_off_sharp, color: Colors.orange, size: 20,),
+                  onPressed: () {
+                    setState(() {
+                      click = !click;
+                    });
+                    click ? cameraController?.setFlashMode(FlashMode.always) : cameraController?.setFlashMode(FlashMode.off);
+                  }),
             ],
           ),
-          FutureBuilder(
-              future: _loadCamera(),
-              builder: (context, snapshot) {
-                print(snapshot);
-                if (snapshot.connectionState == ConnectionState.done) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    child: CameraPreview(cameraController!),
-                  );
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
-              }),
           Expanded(
               child: GestureDetector(
                 child: Icon(
@@ -92,7 +92,8 @@ class CameraViewState extends State<CameraView> {
                   color: AdaptiveTheme.of(context).theme.highlightColor,
                 ),
                 onTap: _takePicture,
-              ))
+              )
+          ),
         ],
       ),
     );

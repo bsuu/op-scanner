@@ -284,4 +284,6 @@ class Octicons {
   static const IconData archive_16 = IconData(0xe904, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData arrow_both_16 = IconData(0xe905, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData arrow_down_16 = IconData(0xe906, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData flash_on_outlined = IconData(0xf080, fontFamily: 'MaterialIcons');
+  static const IconData flash_off_sharp = IconData(0xe98d, fontFamily: 'MaterialIcons');
 }
