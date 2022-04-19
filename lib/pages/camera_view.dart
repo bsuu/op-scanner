@@ -6,7 +6,7 @@ import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/main.dart';
 import 'package:skan/octicons_icons.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:toggle_switch/toggle_switch.dart';
+import 'package:skan/widgets/flash_button.dart';
 
 class CameraViewState extends State<CameraView> {
   CameraController? cameraController;
@@ -72,16 +72,11 @@ class CameraViewState extends State<CameraView> {
                       return const Center(child: CircularProgressIndicator());
                     }
                   }),
-              FloatingActionButton(
-                  focusColor: AdaptiveTheme.of(context).theme.highlightColor,
-                  backgroundColor: Colors.transparent,
-                  child: Icon(click ? Octicons.flash_on_outlined : Octicons.flash_off_sharp, color: Colors.orange, size: 20,),
-                  onPressed: () {
-                    setState(() {
-                      click = !click;
-                    });
-                    click ? cameraController?.setFlashMode(FlashMode.always) : cameraController?.setFlashMode(FlashMode.off);
-                  }),
+              // StatefulBuilder(
+              //     builder: ,
+              //
+              // ),
+              FlashButton(cameraController: cameraController),
             ],
           ),
           Expanded(
