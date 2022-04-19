@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:skan/themes.dart';
 import 'package:skan/widgets/file/file_item_slider.dart';
+import '../../pages/item_view.dart';
 
 import '../../data/scan_file.dart';
 import '../../octicons_icons.dart';
@@ -86,6 +87,22 @@ class FileItemState extends State<FileItem> {
                     alignment: WrapAlignment.end,
                     spacing: 20,
                     children: [
+                      GestureDetector(
+                        child: Icon(Octicons.file_16,
+                            color: AdaptiveTheme.of(context)
+                                .theme
+                                .iconTheme
+                                .color),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ItemView(
+                                    fileName: widget.scanFile.name,
+                                    files: widget.scanFile.files,
+                                  )));
+                        },
+                      ),
                       GestureDetector(
                         child: Icon(Octicons.info_16,
                             color: AdaptiveTheme.of(context)

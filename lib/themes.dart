@@ -15,11 +15,13 @@ class CustomThemes{
       headline1: TextStyle (
         color: Color.fromARGB(255, 25, 25, 25),
         fontSize: 18,
+        fontWeight: FontWeight.normal,
       ),
       bodyText1: TextStyle (
         color: Color.fromARGB(255, 36, 36, 36),
         fontSize: 14,
         height: 1.8,
+        fontWeight: FontWeight.normal,
       ),
     ),
     iconTheme: IconThemeData (
