@@ -33,10 +33,22 @@ class ScanViewState extends State<ScanView> {
     return await _provider.getTempImageLocation() ?? [];
   }
 
+  Future<void> _add(String path) async {
+    var tempImages = await _provider.getTempImageLocation() ?? [];
+    tempImages.add(path);
+    _provider.setTempImageLocation(tempImages);
+  }
+
   Future<void> _reorder(int oldIndex, int newIndex) async {
     var tempImages = await _provider.getTempImageLocation() ?? [];
     String tmp = tempImages.removeAt(oldIndex);
     tempImages.insert(newIndex, tmp);
+    _provider.setTempImageLocation(tempImages);
+  }
+
+  Future<void> _remove(int index) async {
+    var tempImages = await _provider.getTempImageLocation() ?? [];
+    tempImages.removeAt(index);
     _provider.setTempImageLocation(tempImages);
   }
 
@@ -62,7 +74,7 @@ class ScanViewState extends State<ScanView> {
                   .viewPadding
                   .top, left: 8, right: 8),
               child: SingleChildScrollView(child: Column(children: [
-                ScanImagePreview(reorder: _reorder, reload: loadTempImages, files: snapshot.data as List<String>),
+                ScanImagePreview(add: _add, reorder: _reorder, reload: loadTempImages, remove: _remove, files: snapshot.data as List<String>),
                 Container(
                   padding: EdgeInsets.only(top: 10),
                   child: TextField(

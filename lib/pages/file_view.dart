@@ -6,7 +6,7 @@ import 'package:skan/data/scan_file.dart';
 import 'package:skan/provider/scan_file_storage.dart';
 
 import '../skan_colors.dart';
-import '../widgets/file_item.dart';
+import '../widgets/file/file_item.dart';
 
 class FileView extends StatefulWidget{
 
@@ -41,7 +41,6 @@ class FileViewState extends State<FileView> {
             if (snapshot.connectionState != ConnectionState.done) {
               return const CircularProgressIndicator();
             } else {
-              print(snapshot);
               List<ScanFile> files = snapshot.data as List<ScanFile>;
               return ListView.builder(
                   itemCount: files.length,
