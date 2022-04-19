@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skan/octicons_icons.dart';
 import 'package:skan/skan_colors.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 
 class ScanImageWidgetState extends State<ScanImageWidget> {
   bool _isShowed = false;
@@ -31,7 +32,7 @@ class ScanImageWidgetState extends State<ScanImageWidget> {
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 color: file_item_background,
                 border: (widget.border)
-                    ? Border.all(width: 4, color: Colors.green)
+                    ? Border.all(width: 4, color: AdaptiveTheme.of(context).theme.highlightColor)
                     : null,
               )),
         ),
@@ -39,7 +40,7 @@ class ScanImageWidgetState extends State<ScanImageWidget> {
           duration: const Duration(milliseconds: 200),
           height: _isShowed ? heightSize : 0,
           width: widthSize,
-          color: Colors.red,
+          color: AdaptiveTheme.of(context).theme.highlightColor,
           curve: Curves.easeInOut,
           child: _isShowed ? Wrap(
             alignment: WrapAlignment.center,
@@ -48,7 +49,7 @@ class ScanImageWidgetState extends State<ScanImageWidget> {
             direction: Axis.vertical,
             children: [
               IconButton(
-                  icon: Icon(Octicons.trash_16),
+                  icon: Icon(Octicons.trash_16, color: AdaptiveTheme.of(context).theme.iconTheme.color,),
               onPressed: () {
                 widget.onRemove(widget.index);
                 showHide();
@@ -56,7 +57,7 @@ class ScanImageWidgetState extends State<ScanImageWidget> {
 
               IconButton(
                   onPressed: showHide,
-                  icon: Icon(Octicons.x_16))
+                  icon: Icon(Octicons.x_16, color: AdaptiveTheme.of(context).theme.iconTheme.color,))
             ],
           ) : null,
         )
