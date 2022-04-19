@@ -24,11 +24,13 @@ class ScanFile {
   final STATUS transcription;
   final STATUS cloud;
 
+  final DateTime created;
+
   final List<String> files;
 
 
 
-  ScanFile({required this.name, required this.type, required this.transcription, required this.cloud, this.files = const []});
+  ScanFile({required this.name, required this.type, required this.transcription, required this.cloud, required this.created, this.files = const []});
 
   factory ScanFile.fromJson(Map<String, dynamic> json) => _$ScanFileFromJson(json);
   Map<String, dynamic> toJson() => _$ScanFileToJson(this);

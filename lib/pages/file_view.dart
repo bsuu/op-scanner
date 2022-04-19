@@ -20,6 +20,9 @@ class FileView extends StatefulWidget{
 class FileViewState extends State<FileView> {
 
   late final ScanFileStorage _provider;
+
+  List<ScanFile> files = [];
+
   @override
   void initState() {
     super.initState();
@@ -28,6 +31,17 @@ class FileViewState extends State<FileView> {
 
   Future loadLocalData() async {
     return await _provider.getFiles() ?? [];
+  }
+
+
+   Future<void> _remove(int index) async {
+     var temp = await _provider.getFiles() ?? [];
+     temp.removeAt(index);
+     _provider.setFiles(temp);
+     var data = await loadLocalData();
+     setState(() {
+      files = data as List<ScanFile>;
+    });
   }
 
   @override
@@ -41,15 +55,12 @@ class FileViewState extends State<FileView> {
             if (snapshot.connectionState != ConnectionState.done) {
               return const CircularProgressIndicator();
             } else {
-              List<ScanFile> files = snapshot.data as List<ScanFile>;
+              files = snapshot.data as List<ScanFile>;
+              print(files);
               return ListView.builder(
                   itemCount: files.length,
                   itemBuilder: (ctx, index) {
-                return FileItem(
-                    file_name: files[index].name,
-                    file_type: files[index].type,
-                    transcription: files[index].transcription,
-                    upload: files[index].cloud)
+                return FileItem(scanFile: files[index], index: index, onRemove: _remove,)
                 ;
               },
             padding: const EdgeInsets.all(15)

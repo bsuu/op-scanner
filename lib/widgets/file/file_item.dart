@@ -9,25 +9,24 @@ import '../../data/scan_file.dart';
 import '../../octicons_icons.dart';
 
 class FileItemState extends State<FileItem> {
-
-  FileItemSliderType state = FileItemSliderType.HIDDEN;
+  FileItemSliderType state = FileItemSliderType.hidden;
 
   void _infoTab() {
     setState(() {
-      if (state != FileItemSliderType.INFO) {
-        state = FileItemSliderType.INFO;
+      if (state != FileItemSliderType.info) {
+        state = FileItemSliderType.info;
       } else {
-        state = FileItemSliderType.HIDDEN;
+        state = FileItemSliderType.hidden;
       }
     });
   }
 
   void _progressTab() {
     setState(() {
-      if (state != FileItemSliderType.PROGRESS) {
-        state = FileItemSliderType.PROGRESS;
+      if (state != FileItemSliderType.progress) {
+        state = FileItemSliderType.progress;
       } else {
-        state = FileItemSliderType.HIDDEN;
+        state = FileItemSliderType.hidden;
       }
     });
   }
@@ -38,7 +37,15 @@ class FileItemState extends State<FileItem> {
       margin: const EdgeInsets.only(bottom: 14),
       child: Stack(
         children: [
-          FileItemSlider(state: state),
+          FileItemSlider(
+            state: state,
+            index: widget.index,
+            amount: widget.scanFile.files.length,
+            date: widget.scanFile.created.toString(),
+            onRemove: (index) {
+              widget.onRemove(index);
+            },
+          ),
           Container(
               constraints: const BoxConstraints(maxHeight: 75),
               padding: const EdgeInsets.all(10),
@@ -53,20 +60,24 @@ class FileItemState extends State<FileItem> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        widget.file_name,
-                        style: AdaptiveTheme.of(context).theme.textTheme.headline1,
+                        widget.scanFile.name,
+                        style:
+                            AdaptiveTheme.of(context).theme.textTheme.headline1,
                       ),
                       Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(widget.file_type,
-                                style: AdaptiveTheme.of(context).theme.textTheme.bodyText1),
-                            if (widget.file_lang != null)
-                              Flag.fromString(widget.file_lang,
-                                  height: 14,
-                                  width: 20,
-                                  fit: BoxFit.fill,
-                                  borderRadius: 2),
+                            Text(widget.scanFile.type,
+                                style: AdaptiveTheme.of(context)
+                                    .theme
+                                    .textTheme
+                                    .bodyText1),
+                            // if (widget.scanFile. != null)
+                            //   Flag.fromString(widget.file_lang,
+                            //       height: 14,
+                            //       width: 20,
+                            //       fit: BoxFit.fill,
+                            //       borderRadius: 2),
                           ]),
                     ],
                   ),
@@ -77,17 +88,21 @@ class FileItemState extends State<FileItem> {
                     children: [
                       GestureDetector(
                         child: Icon(Octicons.info_16,
-                            color: AdaptiveTheme.of(context).theme.iconTheme.color),
+                            color: AdaptiveTheme.of(context)
+                                .theme
+                                .iconTheme
+                                .color),
                         onTap: _infoTab,
                       ),
                       GestureDetector(
                         child: Icon(Octicons.beaker_16,
-                            color: getIconColor(widget.transcription).color),
+                            color: getIconColor(widget.scanFile.transcription)
+                                .color),
                         onTap: _progressTab,
                       ),
                       GestureDetector(
                         child: Icon(Octicons.paper_airplane_16,
-                            color: getIconColor(widget.upload).color),
+                            color: getIconColor(widget.scanFile.cloud).color),
                         onTap: _progressTab,
                       )
                     ],
@@ -111,22 +126,16 @@ class FileItemState extends State<FileItem> {
 }
 
 class FileItem extends StatefulWidget {
-  FileItem({
-    Key? key,
-    required this.file_name,
-    required this.file_type,
-    required this.transcription,
-    required this.upload,
-    this.file_lang,
-  }) : super(key: key);
+  FileItem(
+      {Key? key,
+      required this.scanFile,
+      this.index = 0,
+      required this.onRemove})
+      : super(key: key);
 
-  final String file_name;
-  final String file_type;
-
-  STATUS upload;
-  STATUS transcription;
-
-  var file_lang;
+  final ScanFile scanFile;
+  int index;
+  var onRemove;
 
   @override
   State<StatefulWidget> createState() => FileItemState();
