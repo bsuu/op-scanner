@@ -11,7 +11,6 @@ import '../../pages/camera_view.dart';
 class ScanImagePreviewState extends State<ScanImagePreview> {
 
   void _picture_take(String path) {
-    print("siema");
     setState(() {
       widget.files.add(path);
     });

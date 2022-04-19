@@ -26,7 +26,7 @@ class MainWidget extends StatefulWidget {
 
 class MainWidgetState extends State<MainWidget> {
 
-  final PageController _controller = PageController();
+  static final PageController _controller = PageController();
   int selectedIndex = 0;
 
   void changeIndexState(int index) {
@@ -41,9 +41,11 @@ class MainWidgetState extends State<MainWidget> {
           child: Scaffold(
             body: PageView(
               controller: _controller,
-              children: const [
+              children: [
                 FileView(),
-                ScanView(),
+                ScanView(
+                  moveBack: changeIndexState,
+                ),
                 ProfileView(),
               ],
                 onPageChanged: (page) {
