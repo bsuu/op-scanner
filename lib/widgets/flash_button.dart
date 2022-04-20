@@ -10,7 +10,7 @@ class FlashButtonState extends State<FlashButton> {
 
   @override
   Widget build(BuildContext context) {
-    var height = widget.cameraController?.value.previewSize;
+    Size? height = widget.cameraController?.value.previewSize;
     return Container(
       height: height!.height - 30,
       alignment: Alignment.bottomRight,
