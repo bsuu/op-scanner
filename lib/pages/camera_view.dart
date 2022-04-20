@@ -62,19 +62,22 @@ class CameraViewState extends State<CameraView> {
                   builder: (context, snapshot) {
                     print(snapshot);
                     if (snapshot.connectionState == ConnectionState.done) {
-                      return ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        child: CameraPreview(cameraController!),
-                      );
+                      return Stack(
+                        children: [
+                          ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          child: CameraPreview(cameraController!),
+                          ),
+                          FlashButton(cameraController: cameraController),
+                    ]);
                     } else {
-                      return const Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                     }
                   }),
               // StatefulBuilder(
               //     builder: ,
               //
               // ),
-              FlashButton(cameraController: cameraController),
             ],
           ),
           Expanded(
