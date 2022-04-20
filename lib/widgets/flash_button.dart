@@ -6,16 +6,21 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import '../octicons_icons.dart';
 
 class FlashButtonState extends State<FlashButton> {
-
   bool click = false;
 
   @override
   Widget build(BuildContext context) {
+    double heightSize = (MediaQuery.of(context).size.height) - 160;
     return Container(
+      height: heightSize,
+      alignment: Alignment.bottomRight,
       child: FloatingActionButton(
           focusColor: AdaptiveTheme.of(context).theme.highlightColor,
           backgroundColor: Colors.transparent,
-          child: Icon(click ? Octicons.flash_on_outlined : Octicons.flash_off_sharp, color: Colors.orange, size: 20,),
+          child: Container(
+            padding: EdgeInsets.only(top: 10),
+            child: Icon(click ? Octicons.flash_on_outlined : Octicons.flash_off_sharp, color: Colors.orange, size: 20,),
+          ),
           onPressed: () {
             setState(() {
               click = !click;

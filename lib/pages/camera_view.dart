@@ -47,8 +47,6 @@ class CameraViewState extends State<CameraView> {
     } catch (e) { print(e); }
   }
 
-  bool click = false;
-
   @override
   Widget build(BuildContext context) {
     return Container(
