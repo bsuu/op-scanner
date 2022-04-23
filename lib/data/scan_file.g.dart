@@ -15,6 +15,13 @@ ScanFile _$ScanFileFromJson(Map<String, dynamic> json) => ScanFile(
       files:
           (json['files'] as List<dynamic>?)?.map((e) => e as String).toList() ??
               const [],
+      trb: (json['trb'] as List<dynamic>?)
+              ?.map((e) => (e as List<dynamic>)
+                  .map((e) =>
+                      TextRecognisionBlock.fromJson(e as Map<String, dynamic>))
+                  .toList())
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$ScanFileToJson(ScanFile instance) => <String, dynamic>{
@@ -24,6 +31,7 @@ Map<String, dynamic> _$ScanFileToJson(ScanFile instance) => <String, dynamic>{
       'cloud': _$STATUSEnumMap[instance.cloud],
       'created': instance.created.toIso8601String(),
       'files': instance.files,
+      'trb': instance.trb,
     };
 
 const _$STATUSEnumMap = {

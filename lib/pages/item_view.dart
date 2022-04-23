@@ -4,18 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/data/scan_file.dart';
+import 'package:skan/data/text_recognision_block.dart';
 import 'package:skan/provider/scan_file_storage.dart';
 
 import '../widgets/file/file_item.dart';
 
 class ItemView extends StatefulWidget{
-  final String fileName;
-  List<String> files;
+  final ScanFile scanFile;
 
   ItemView(
       {Key? key,
-        required this.fileName,
-        required this.files})
+        required this.scanFile
+      })
       : super(key: key);
 
   @override
@@ -28,6 +28,12 @@ class ItemViewState extends State<ItemView> {
   Widget build(BuildContext context) {
     double widthSize = (MediaQuery.of(context).size.width - 48) / 3;
     double heightSize = (widthSize / 9) * 14;
+
+    for (List<TextRecognisionBlock> ltrb in widget.scanFile.trb)
+      for (TextRecognisionBlock trb in ltrb)
+        for(String line in trb.lines)
+          print(line);
+
     return Container(
         decoration: BoxDecoration(color: AdaptiveTheme.of(context).theme.backgroundColor),
         padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top),
@@ -44,7 +50,7 @@ class ItemViewState extends State<ItemView> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(widget.fileName, style: AdaptiveTheme.of(context).theme.textTheme.headline1,)
+                  Text(widget.scanFile.name, style: AdaptiveTheme.of(context).theme.textTheme.headline1,)
                 ],
               ),
             ),
@@ -52,14 +58,14 @@ class ItemViewState extends State<ItemView> {
               spacing: 8,
               runSpacing: 8,
               children: [
-                for (int i = 0; i < widget.files.length; i++)
+                for (int i = 0; i < widget.scanFile.files.length; i++)
                   GestureDetector(
                     child: Container(
                         height: heightSize,
                         width: widthSize,
                         child: ClipRRect(
                           child: Image.file(
-                            File(widget.files[i]),
+                            File(widget.scanFile.files[i]),
                             fit: BoxFit.fill,
                             ),
                           borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -78,10 +84,12 @@ class ItemViewState extends State<ItemView> {
                 borderRadius: BorderRadius.all(Radius.circular(16)),
                 color: AdaptiveTheme.of(context).theme.primaryColor,
               ),
-              child: Row(
+              child: Column(
                 children: <Widget>[
-                  Flexible(
-                      child: Text('Tutaj ma być docelowo tekst przeczytany za pomocą ML Kita z zdjęć', style: AdaptiveTheme.of(context).theme.textTheme.bodyText1,))
+                  for (List<TextRecognisionBlock> ltrb in widget.scanFile.trb)
+                    for (TextRecognisionBlock trb in ltrb)
+                      for (String line in trb.lines)
+                        Text(line, style: AdaptiveTheme.of(context).theme.textTheme.bodyText1,)
                 ],
               ),
             ),
