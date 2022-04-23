@@ -13,31 +13,25 @@ import '../../octicons_icons.dart';
 
 class FileItemState extends State<FileItem> {
   FileItemSliderType state = FileItemSliderType.hidden;
-
-  void _infoTab() {
-    setState(() {
-      if (state != FileItemSliderType.info) {
-        state = FileItemSliderType.info;
-      } else {
-        state = FileItemSliderType.hidden;
-      }
-    });
-  }
+  int progress = -1;
 
   Future<void> _runTextRecognision(ScanFile sf) async {
-    print("TR running");
-    sf.transcription = STATUS.RUNNING;
+    double step = 100 / sf.files.length;
+    setState(() {
+      sf.transcription = STATUS.RUNNING;
+      progress = 0;
+    });
     final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
     List<List<TextRecognisionBlock>> trb = [];
     for (String file in sf.files) {
       final InputImage image = InputImage.fromFilePath(file);
-      final RecognizedText recognizedText = await textRecognizer.processImage(image);
+      final RecognizedText recognizedText =
+          await textRecognizer.processImage(image);
       List<TextRecognisionBlock> trbList = [];
       for (TextBlock block in recognizedText.blocks) {
         final String lang = block.recognizedLanguages.first;
         List<String> lines = [];
         for (TextLine element in block.lines) {
-          print(element.text);
           lines.add(element.text);
         }
         List<Tuple> points = [];
@@ -47,19 +41,48 @@ class FileItemState extends State<FileItem> {
         trbList.add(TextRecognisionBlock(lang, lines, points));
       }
       trb.add(trbList);
+      setState(() {
+        if (trb.length == sf.files.length) {
+          progress = 100;
+        } else {
+          progress += step.ceil();
+        }
+      });
     }
     sf.trb = trb;
-    sf.transcription = STATUS.DONE;
     textRecognizer.close();
-    print("TR stopped");
+    sf.transcription = STATUS.DONE;
+    widget.onSave();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _progressTab();
+      setState(() {
+        progress = -1;
+      });
+    });
   }
 
   void _progressTab() {
+    if (state == FileItemSliderType.info) {
+      return;
+    }
     setState(() {
-      if (state != FileItemSliderType.progress) {
-        state = FileItemSliderType.progress;
-      } else {
+      if (state != FileItemSliderType.hidden) {
         state = FileItemSliderType.hidden;
+      } else {
+        state = FileItemSliderType.progress;
+      }
+    });
+  }
+
+  void _infoTab() {
+    if (state == FileItemSliderType.progress) {
+      return;
+    }
+    setState(() {
+      if (state != FileItemSliderType.hidden) {
+        state = FileItemSliderType.hidden;
+      } else {
+        state = FileItemSliderType.info;
       }
     });
   }
@@ -74,7 +97,8 @@ class FileItemState extends State<FileItem> {
             state: state,
             index: widget.index,
             amount: widget.scanFile.files.length,
-            date: widget.scanFile.created.toString(),
+            date: widget.scanFile.created,
+            progress: progress,
             onRemove: (index) {
               widget.onRemove(index);
             },
@@ -114,21 +138,6 @@ class FileItemState extends State<FileItem> {
                     spacing: 20,
                     children: [
                       GestureDetector(
-                        child: Icon(Octicons.file_16,
-                            color: AdaptiveTheme.of(context)
-                                .theme
-                                .iconTheme
-                                .color),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ItemView(
-                                    scanFile: widget.scanFile
-                                  )));
-                        },
-                      ),
-                      GestureDetector(
                         child: Icon(Octicons.info_16,
                             color: AdaptiveTheme.of(context)
                                 .theme
@@ -148,7 +157,7 @@ class FileItemState extends State<FileItem> {
                       GestureDetector(
                         child: Icon(Octicons.paper_airplane_16,
                             color: getIconColor(widget.scanFile.cloud).color),
-                        onTap: _progressTab,
+                        //onTap: _progressTab,
                       )
                     ],
                   ))
@@ -171,16 +180,18 @@ class FileItemState extends State<FileItem> {
 }
 
 class FileItem extends StatefulWidget {
-  FileItem(
+  const FileItem(
       {Key? key,
       required this.scanFile,
       this.index = 0,
-      required this.onRemove})
+      required this.onRemove,
+      required this.onSave})
       : super(key: key);
 
   final ScanFile scanFile;
-  int index;
-  var onRemove;
+  final int index;
+  final Future<void> Function(int index) onRemove;
+  final Future<void> Function() onSave;
 
   @override
   State<StatefulWidget> createState() => FileItemState();

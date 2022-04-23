@@ -2,7 +2,9 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:skan/octicons_icons.dart';
+import 'package:skan/themes.dart';
 
 enum FileItemSliderType {
   hidden,
@@ -30,8 +32,13 @@ class FileItemSliderState extends State<FileItemSlider> {
         gradient: LinearGradient(
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
+            stops: (widget.state == FileItemSliderType.progress)
+                ? [0, widget.progress / 100]
+                : [0, 0],
             colors: [
-              AdaptiveTheme.of(context).theme.primaryColor,
+              (widget.progress > 0)
+                  ? CustomThemes().getFileSliderColor(widget.state, context)
+                  : AdaptiveTheme.of(context).theme.primaryColor,
               AdaptiveTheme.of(context).theme.primaryColor
             ]),
         borderRadius: const BorderRadius.all(Radius.circular(18)),
@@ -47,33 +54,27 @@ class FileItemSliderState extends State<FileItemSlider> {
                         Row(
                           children: [
                             const Icon(Octicons.calendar_16, size: 18),
-                            Text("  ${widget.date}",
-                                style: TextStyle(fontSize: 16)),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Icon(Octicons.database_16, size: 18),
-                            Text("  ${widget.size}",
-                                style: TextStyle(fontSize: 16)),
+                            Text(
+                                "  ${DateFormat("yyyy-MM-dd HH:mm").format(widget.date)}",
+                                style: const TextStyle(fontSize: 16)),
                           ],
                         ),
                         Row(
                           children: [
                             const Icon(Octicons.file_diff_16, size: 18),
                             Text("  ${widget.amount}",
-                                style: TextStyle(fontSize: 16)),
+                                style: const TextStyle(fontSize: 16)),
                           ],
                         ),
                       ])),
                   GestureDetector(
                     onTap: () {
                       widget.onRemove(widget.index);
-                      print("Removeed");
                     },
                     child: const Icon(
                       Octicons.trash_16,
                       size: 30,
+                      color: Colors.red,
                     ),
                   ),
                 ]
@@ -83,24 +84,25 @@ class FileItemSliderState extends State<FileItemSlider> {
 }
 
 class FileItemSlider extends StatefulWidget {
-  FileItemSliderType state;
+  final FileItemSliderType state;
 
-  String date;
-  String size;
-  int amount;
-  int index;
+  final DateTime date;
+  final int amount;
+  final int index;
+  final int progress;
 
-  var onRemove;
+  final void Function(int index) onRemove;
 
-  FileItemSlider(
-      {Key? key,
-      required this.state,
-      this.date = "",
-      this.size = "",
-      this.amount = 0,
-      this.index = 0,
-      this.onRemove})
-      : super(key: key);
+  FileItemSlider({
+    Key? key,
+    required this.state,
+    this.amount = 0,
+    this.index = 0,
+    this.progress = 100,
+    required this.onRemove,
+    DateTime? date,
+  })  : date = date ?? DateTime.now(),
+        super(key: key);
 
   @override
   State<StatefulWidget> createState() => FileItemSliderState();

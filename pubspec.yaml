@@ -48,6 +48,7 @@ dependencies:
   camera: ^0.9.4+19
   json_annotation: ^4.4.0
   google_ml_kit: ^0.8.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
