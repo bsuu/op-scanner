@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:skan/widgets/file/file_item_slider.dart';
 import '../data/scan_file.dart';
 
 class CustomThemes{
@@ -62,5 +63,12 @@ class CustomThemes{
       return IconThemeData(color: Color.fromARGB(255, 36, 96, 155));
     }
     return AdaptiveTheme.of(context).theme.iconTheme;
+  }
+
+  Color getFileSliderColor(FileItemSliderType status, context) {
+    if (status == FileItemSliderType.progress) {
+      return Color.fromARGB(255, 244, 215, 111);
+    }
+    return AdaptiveTheme.of(context).theme.primaryColor;
   }
 }
