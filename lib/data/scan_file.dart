@@ -1,7 +1,9 @@
 
 import 'dart:convert';
 
+import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:skan/data/text_recognision_block.dart';
 
 part 'scan_file.g.dart';
 
@@ -21,16 +23,17 @@ class ScanFile {
   final String name;
   final String type;
 
-  final STATUS transcription;
-  final STATUS cloud;
+  STATUS transcription;
+  STATUS cloud;
 
   final DateTime created;
 
   final List<String> files;
+  List<List<TextRecognisionBlock>> trb;
 
 
 
-  ScanFile({required this.name, required this.type, required this.transcription, required this.cloud, required this.created, this.files = const []});
+  ScanFile({required this.name, required this.type, required this.transcription, required this.cloud, required this.created, this.files = const [], this.trb = const []});
 
   factory ScanFile.fromJson(Map<String, dynamic> json) => _$ScanFileFromJson(json);
   Map<String, dynamic> toJson() => _$ScanFileToJson(this);

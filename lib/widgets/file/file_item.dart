@@ -2,6 +2,8 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flag/flag_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:skan/data/text_recognision_block.dart';
 import 'package:skan/themes.dart';
 import 'package:skan/widgets/file/file_item_slider.dart';
 import '../../pages/item_view.dart';
@@ -20,6 +22,36 @@ class FileItemState extends State<FileItem> {
         state = FileItemSliderType.hidden;
       }
     });
+  }
+
+  Future<void> _runTextRecognision(ScanFile sf) async {
+    print("TR running");
+    sf.transcription = STATUS.RUNNING;
+    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+    List<List<TextRecognisionBlock>> trb = [];
+    for (String file in sf.files) {
+      final InputImage image = InputImage.fromFilePath(file);
+      final RecognizedText recognizedText = await textRecognizer.processImage(image);
+      List<TextRecognisionBlock> trbList = [];
+      for (TextBlock block in recognizedText.blocks) {
+        final String lang = block.recognizedLanguages.first;
+        List<String> lines = [];
+        for (TextLine element in block.lines) {
+          print(element.text);
+          lines.add(element.text);
+        }
+        List<Tuple> points = [];
+        for (Offset element in block.cornerPoints) {
+          points.add(Tuple(element.dx, element.dy));
+        }
+        trbList.add(TextRecognisionBlock(lang, lines, points));
+      }
+      trb.add(trbList);
+    }
+    sf.trb = trb;
+    sf.transcription = STATUS.DONE;
+    textRecognizer.close();
+    print("TR stopped");
   }
 
   void _progressTab() {
@@ -73,12 +105,6 @@ class FileItemState extends State<FileItem> {
                                     .theme
                                     .textTheme
                                     .bodyText1),
-                            // if (widget.scanFile. != null)
-                            //   Flag.fromString(widget.file_lang,
-                            //       height: 14,
-                            //       width: 20,
-                            //       fit: BoxFit.fill,
-                            //       borderRadius: 2),
                           ]),
                     ],
                   ),
@@ -98,8 +124,7 @@ class FileItemState extends State<FileItem> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ItemView(
-                                    fileName: widget.scanFile.name,
-                                    files: widget.scanFile.files,
+                                    scanFile: widget.scanFile
                                   )));
                         },
                       ),
@@ -115,7 +140,10 @@ class FileItemState extends State<FileItem> {
                         child: Icon(Octicons.beaker_16,
                             color: getIconColor(widget.scanFile.transcription)
                                 .color),
-                        onTap: _progressTab,
+                        onTap: () {
+                          _progressTab();
+                          _runTextRecognision(widget.scanFile);
+                        },
                       ),
                       GestureDetector(
                         child: Icon(Octicons.paper_airplane_16,
