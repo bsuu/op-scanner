@@ -20,9 +20,9 @@ class ProfileViewState extends State<ProfileView> {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return const ProfileWidget();
+                  return ProfileWidget();
                 } else {
-                  return const LoginWidget();
+                  return LoginWidget();
                 }
               }
             ),

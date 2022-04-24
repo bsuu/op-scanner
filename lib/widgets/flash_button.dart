@@ -9,9 +9,9 @@ class FlashButtonState extends State<FlashButton> {
 
   @override
   Widget build(BuildContext context) {
-    Size? height = widget.cameraController?.value.previewSize;
+    double height = (MediaQuery.of(context).size.height);
     return Container(
-      height: height!.height - 30,
+      height: height - 160,
       alignment: Alignment.bottomRight,
       child: FloatingActionButton(
           focusColor: AdaptiveTheme.of(context).theme.highlightColor,
