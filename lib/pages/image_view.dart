@@ -17,8 +17,6 @@ class ImageViewState extends State<ImageView> {
       }
     }
 
-    print(lines);
-
     return PageView(
       children: [
         Container(
