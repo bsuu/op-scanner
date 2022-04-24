@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:skan/widgets/file/file_item_slider.dart';
+
 import '../data/scan_file.dart';
 
 class CustomThemes{

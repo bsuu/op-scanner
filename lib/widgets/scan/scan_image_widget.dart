@@ -1,7 +1,7 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:skan/octicons_icons.dart';
 import 'package:skan/skan_colors.dart';
-import 'package:adaptive_theme/adaptive_theme.dart';
 
 class ScanImageWidgetState extends State<ScanImageWidget> {
   bool _isShowed = false;

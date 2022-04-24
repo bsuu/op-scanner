@@ -10,7 +10,7 @@ import '../../pages/camera_view.dart';
 
 class ScanImagePreviewState extends State<ScanImagePreview> {
 
-  void _picture_take(String path) {
+  void _pictureTake(String path) {
     setState(() {
       widget.files.add(path);
     });
@@ -57,7 +57,7 @@ class ScanImagePreviewState extends State<ScanImagePreview> {
                         MaterialPageRoute(
                             builder: (
                                 context) => CameraView(
-                              onPictureTaken: _picture_take,
+                              onPictureTaken: _pictureTake,
                             )));
                   },
                 ),

@@ -1,14 +1,9 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:skan/octicons_icons.dart';
-import 'package:skan/provider/google_sign_in.dart';
 import 'package:skan/widgets/login_widget.dart';
 import 'package:skan/widgets/option_item.dart';
-import 'package:skan/widgets/options_widget.dart';
-import 'package:toggle_switch/toggle_switch.dart';
-import 'package:adaptive_theme/adaptive_theme.dart';
 
 import '../widgets/profile_widget.dart';
 
@@ -25,13 +20,13 @@ class ProfileViewState extends State<ProfileView> {
               stream: FirebaseAuth.instance.authStateChanges(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return ProfileWidget();
+                  return const ProfileWidget();
                 } else {
-                  return LoginWidget();
+                  return const LoginWidget();
                 }
               }
             ),
-            OptionItem(option_name: "Motyw jasnsy czy ciemny?")
+            const OptionItem(optionName: "Motyw jasnsy czy ciemny?")
           ]
         )
     );

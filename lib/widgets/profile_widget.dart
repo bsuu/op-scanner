@@ -1,10 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/octicons_icons.dart';
-import 'package:skan/widgets/options_widget.dart';
 
 import '../provider/google_sign_in.dart';
 
@@ -17,7 +15,7 @@ class ProfileWidgetState extends State<ProfileWidget> {
     return Container(
         margin: const EdgeInsets.only(bottom: 14),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
           color: AdaptiveTheme.of(context).theme.backgroundColor,
         ),
         child: Column(
@@ -64,7 +62,7 @@ class ProfileWidgetState extends State<ProfileWidget> {
                   padding: const EdgeInsets.all(14),
                   margin: const EdgeInsets.only(bottom: 14),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                    borderRadius: const BorderRadius.all(Radius.circular(16)),
                     color: AdaptiveTheme.of(context).theme.primaryColor,
                   ),
                   child: Row(
@@ -79,7 +77,7 @@ class ProfileWidgetState extends State<ProfileWidget> {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                    borderRadius: const BorderRadius.all(Radius.circular(16)),
                     color: AdaptiveTheme.of(context).theme.primaryColor,
                   ),
                   child: Row(

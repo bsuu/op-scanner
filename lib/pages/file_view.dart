@@ -1,11 +1,9 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/data/scan_file.dart';
 import 'package:skan/provider/scan_file_storage.dart';
 
-import '../skan_colors.dart';
 import '../widgets/file/file_item.dart';
 import 'item_view.dart';
 
@@ -75,7 +73,6 @@ class FileViewState extends State<FileView> {
                                     ItemView(scanFile: files[index])));
                       },
                     );
-                    ;
                   },
                   padding: const EdgeInsets.all(15));
             }

@@ -1,7 +1,6 @@
-import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 
 import '../octicons_icons.dart';
 
@@ -18,7 +17,7 @@ class FlashButtonState extends State<FlashButton> {
           focusColor: AdaptiveTheme.of(context).theme.highlightColor,
           backgroundColor: Colors.transparent,
           child: Container(
-            padding: EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 10),
             child: Icon(click ? Octicons.flash_on_outlined : Octicons.flash_off_sharp, color: Colors.orange, size: 20,),
           ),
           onPressed: () {

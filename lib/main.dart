@@ -1,17 +1,15 @@
 
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:camera/camera.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/main_widget.dart';
-import 'package:adaptive_theme/adaptive_theme.dart';
-
-import 'package:firebase_core/firebase_core.dart';
 import 'package:skan/provider/google_sign_in.dart';
 import 'package:skan/provider/navbar_provider.dart';
 import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/themes.dart';
-import 'package:skan/widgets/navbar_widget.dart';
 
 late final camera;
 
