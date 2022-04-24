@@ -1,19 +1,12 @@
-import 'dart:io';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:reorderables/reorderables.dart';
 import 'package:skan/data/scan_file.dart';
-import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/octicons_icons.dart';
-import 'package:skan/pages/camera_view.dart';
+import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/widgets/scan/scan_image_preview.dart';
-import 'package:skan/widgets/scan/scan_image_widget.dart';
-import 'package:toggle_switch/toggle_switch.dart';
 
 class ScanViewState extends State<ScanView> {
-
   late final ScanFileStorage _provider;
   final textController = TextEditingController();
 
@@ -54,47 +47,44 @@ class ScanViewState extends State<ScanView> {
 
   @override
   Widget build(BuildContext context) {
-    print("rebuid scan");
     return FutureBuilder(
       future: loadTempImages(),
       builder: (context, snapshot) {
-        print(snapshot.data);
         if (snapshot.connectionState != ConnectionState.done) {
           return const CircularProgressIndicator();
         } else {
-          print(snapshot);
           return Container(
               decoration: BoxDecoration(
-                  color: AdaptiveTheme
-                      .of(context)
-                      .theme
-                      .backgroundColor),
-              padding: EdgeInsets.only(top: MediaQuery
-                  .of(context)
-                  .viewPadding
-                  .top, left: 8, right: 8),
-              child: SingleChildScrollView(child: Column(children: [
-                ScanImagePreview(add: _add, reorder: _reorder, reload: loadTempImages, remove: _remove, files: snapshot.data as List<String>),
+                  color: AdaptiveTheme.of(context).theme.backgroundColor),
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).viewPadding.top,
+                  left: 8,
+                  right: 8),
+              child: SingleChildScrollView(
+                  child: Column(children: [
+                ScanImagePreview(
+                    add: _add,
+                    reorder: _reorder,
+                    reload: loadTempImages,
+                    remove: _remove,
+                    files: snapshot.data as List<String>),
                 Container(
-                  padding: EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 10),
                   child: TextField(
                     controller: textController,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AdaptiveTheme
-                            .of(context)
-                            .theme
-                            .highlightColor),
+                        borderSide: BorderSide(
+                            color:
+                                AdaptiveTheme.of(context).theme.highlightColor),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       hintText: 'Nazwa pliku',
                     ),
                   ),
-
                 ),
                 GestureDetector(
                     onTap: () async {
-
                       String name = textController.text;
 
                       if (name == '') {
@@ -102,7 +92,13 @@ class ScanViewState extends State<ScanView> {
                       }
 
                       var temp = await _provider.getTempImageLocation() ?? [];
-                      ScanFile sf = ScanFile(name: name,
+
+                      if (temp.isEmpty) {
+                        return;
+                      }
+
+                      ScanFile sf = ScanFile(
+                          name: name,
                           type: "image",
                           cloud: STATUS.NONE,
                           transcription: STATUS.NONE,
@@ -113,46 +109,39 @@ class ScanViewState extends State<ScanView> {
                       textController.text = "";
                       widget.moveBack(0);
 
-                      setState(() {
-
-                      });
+                      setState(() {});
                     },
                     child: Container(
                       padding: const EdgeInsets.all(14),
                       margin: const EdgeInsets.only(bottom: 14 + 65, top: 14),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
-                        color: AdaptiveTheme
-                            .of(context)
-                            .theme
-                            .primaryColor,
+                        borderRadius: const BorderRadius.all(Radius.circular(16)),
+                        color: AdaptiveTheme.of(context).theme.primaryColor,
                       ),
                       child: Row(
                         children: [
                           Expanded(
                               child: Wrap(
-                                alignment: WrapAlignment.center,
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                spacing: 15,
-                                children: [
-                                  Icon(Octicons.file_16,
-                                      size: 24,
-                                      color: AdaptiveTheme
-                                          .of(context)
-                                          .theme
-                                          .iconTheme
-                                          .color),
-                                  Text(
-                                    "Zapisz plik",
-                                    style: AdaptiveTheme
-                                        .of(context)
-                                        .theme
-                                        .textTheme
-                                        .headline1,
-                                    textAlign: TextAlign.center,
-                                  )
-                                ],
-                              ))
+                            alignment: WrapAlignment.center,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 15,
+                            children: [
+                              Icon(Octicons.file_16,
+                                  size: 24,
+                                  color: AdaptiveTheme.of(context)
+                                      .theme
+                                      .iconTheme
+                                      .color),
+                              Text(
+                                "Zapisz plik",
+                                style: AdaptiveTheme.of(context)
+                                    .theme
+                                    .textTheme
+                                    .headline1,
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ))
                         ],
                       ),
                     ))
@@ -160,17 +149,13 @@ class ScanViewState extends State<ScanView> {
         }
       },
     );
-
-
-
   }
 }
 
 class ScanView extends StatefulWidget {
+  final void Function(int) moveBack;
 
-  var moveBack;
-
-  ScanView({Key? key, this.moveBack = null}) : super(key: key);
+  const ScanView({Key? key, required this.moveBack}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => ScanViewState();

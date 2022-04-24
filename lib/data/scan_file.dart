@@ -1,7 +1,4 @@
 
-import 'dart:convert';
-
-import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:skan/data/text_recognision_block.dart';
 

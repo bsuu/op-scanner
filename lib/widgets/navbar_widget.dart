@@ -1,5 +1,3 @@
-
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,30 +6,27 @@ import 'package:provider/provider.dart';
 import '../provider/navbar_provider.dart';
 
 class NavbarState extends State<Navbar> {
-
   @override
   Widget build(BuildContext context) {
-    print("rebuild");
     double size = ((MediaQuery.of(context).size.width - 96) / 3);
     return Container(
-      constraints: BoxConstraints(
-        maxHeight: 46
-      ),
-      margin: EdgeInsets.only(bottom: 14, left: 48, right: 48),
+      constraints: const BoxConstraints(maxHeight: 46),
+      margin: const EdgeInsets.only(bottom: 14, left: 48, right: 48),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
         color: AdaptiveTheme.of(context).theme.bottomAppBarColor,
       ),
       child: Stack(
         children: [
           AnimatedContainer(
-            duration: Duration(milliseconds: 300),
+            duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-            margin: EdgeInsets.only(left: size * Provider.of<NavbarProvider>(context).currentIndex),
+            margin: EdgeInsets.only(
+                left: size * Provider.of<NavbarProvider>(context).currentIndex),
             width: size,
             height: double.infinity,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
               color: AdaptiveTheme.of(context).theme.highlightColor,
             ),
           ),
@@ -53,17 +48,14 @@ class NavbarState extends State<Navbar> {
       ),
     );
   }
-
 }
 
 class Navbar extends StatefulWidget {
   final List<Widget> items;
   final Function onTap;
 
-  const Navbar({Key? key,
-    required this.items,
-    required this.onTap
-  }) : super(key: key);
+  const Navbar({Key? key, required this.items, required this.onTap})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => NavbarState();

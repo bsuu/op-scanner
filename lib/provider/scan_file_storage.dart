@@ -6,13 +6,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:skan/data/scan_file.dart';
 
 class ScanFileStorage extends ChangeNotifier {
-  static final _storage = FlutterSecureStorage();
+  static const _storage = FlutterSecureStorage();
 
-  static const _files_key = 'files';
-  static const _temp_image_location = 'temp_image_location';
+  static const _filesKey = 'files';
+  static const _tempImageLocationKey = 'temp_image_location';
 
   Future setTempImageLocation(List<String> images) async {
-    await _storage.write(key: _temp_image_location, value: json.encode(images));
+    await _storage.write(key: _tempImageLocationKey, value: json.encode(images));
     notifyListeners();
   }
 
@@ -23,16 +23,15 @@ class ScanFileStorage extends ChangeNotifier {
   }
 
   Future<List<String>?> getTempImageLocation() async {
-    final value = await _storage.read(key: _temp_image_location);
+    final value = await _storage.read(key: _tempImageLocationKey);
     if (value == null) {
       return [];
     }
-    print(value);
     return List<String>.from(json.decode(value));
   }
 
   Future setFiles(List<ScanFile> files) async {
-    await _storage.write(key: _files_key, value: json.encode(files));
+    await _storage.write(key: _filesKey, value: json.encode(files));
     notifyListeners();
   }
 
@@ -43,14 +42,15 @@ class ScanFileStorage extends ChangeNotifier {
   }
 
   Future<List<ScanFile>?> getFiles() async {
-    final value = await _storage.read(key: _files_key);
+    final value = await _storage.read(key: _filesKey);
     if (value == null) {
       return [];
     }
-    List<dynamic> elementy = json.decode(value);
+    List<dynamic> elements = json.decode(value);
     List<ScanFile> files = [];
-    for (var ele in elementy)
+    for (var ele in elements) {
       files.add(ScanFile.fromJson(ele));
+    }
     return files;
   }
 

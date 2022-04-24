@@ -1,12 +1,10 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
-import 'package:flag/flag_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:skan/data/text_recognision_block.dart';
 import 'package:skan/themes.dart';
 import 'package:skan/widgets/file/file_item_slider.dart';
-import '../../pages/item_view.dart';
 
 import '../../data/scan_file.dart';
 import '../../octicons_icons.dart';
@@ -107,7 +105,7 @@ class FileItemState extends State<FileItem> {
               constraints: const BoxConstraints(maxHeight: 75),
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(16)),
+                borderRadius: const BorderRadius.all(Radius.circular(16)),
                 color: AdaptiveTheme.of(context).theme.primaryColorDark,
               ),
               child: Row(
@@ -150,8 +148,10 @@ class FileItemState extends State<FileItem> {
                             color: getIconColor(widget.scanFile.transcription)
                                 .color),
                         onTap: () {
-                          _progressTab();
-                          _runTextRecognision(widget.scanFile);
+                          if (progress < 0) {
+                            _progressTab();
+                            _runTextRecognision(widget.scanFile);
+                          }
                         },
                       ),
                       GestureDetector(

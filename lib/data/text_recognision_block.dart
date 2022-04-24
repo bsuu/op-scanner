@@ -1,6 +1,4 @@
 
-import 'dart:ui';
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'text_recognision_block.g.dart';

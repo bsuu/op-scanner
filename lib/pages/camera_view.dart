@@ -1,11 +1,11 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/main.dart';
 import 'package:skan/octicons_icons.dart';
-import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/widgets/flash_button.dart';
 
 class CameraViewState extends State<CameraView> {
@@ -19,7 +19,6 @@ class CameraViewState extends State<CameraView> {
     _initController = cameraController!.initialize();
     await _initController;
   }
-
 
   @override
   void initState() {
@@ -35,7 +34,6 @@ class CameraViewState extends State<CameraView> {
 
   void _takePicture() async {
     try {
-
       await _initController;
 
       final image = await cameraController!.takePicture();
@@ -43,35 +41,38 @@ class CameraViewState extends State<CameraView> {
       widget.onPictureTaken(image.path);
 
       Navigator.of(context).pop();
-
-    } catch (e) { print(e); }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(color: AdaptiveTheme.of(context).theme.backgroundColor),
+      decoration:
+          BoxDecoration(color: AdaptiveTheme.of(context).theme.backgroundColor),
       padding:
           EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + 15),
       child: Column(
         children: [
           Stack(
-            children: <Widget> [
+            children: <Widget>[
               FutureBuilder(
                   future: _loadCamera(),
                   builder: (context, snapshot) {
-                    print(snapshot);
                     if (snapshot.connectionState == ConnectionState.done) {
-                      return Stack(
-                        children: [
-                          ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                      return Stack(children: [
+                        ClipRRect(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8)),
                           child: CameraPreview(cameraController!),
-                          ),
-                          FlashButton(cameraController: cameraController),
-                    ]);
+                        ),
+                        FlashButton(cameraController: cameraController),
+                      ]);
                     } else {
-                    return const Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                   }),
               // StatefulBuilder(
@@ -82,14 +83,13 @@ class CameraViewState extends State<CameraView> {
           ),
           Expanded(
               child: GestureDetector(
-                child: Icon(
-                  Octicons.circle_16,
-                  size: 48,
-                  color: AdaptiveTheme.of(context).theme.highlightColor,
-                ),
-                onTap: _takePicture,
-              )
-          ),
+            child: Icon(
+              Octicons.circle_16,
+              size: 48,
+              color: AdaptiveTheme.of(context).theme.highlightColor,
+            ),
+            onTap: _takePicture,
+          )),
         ],
       ),
     );
@@ -97,10 +97,9 @@ class CameraViewState extends State<CameraView> {
 }
 
 class CameraView extends StatefulWidget {
+  final Function onPictureTaken;
 
-  Function onPictureTaken;
-
-  CameraView({Key? key, required this.onPictureTaken}) : super(key: key);
+  const CameraView({Key? key, required this.onPictureTaken}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => CameraViewState();

@@ -1,14 +1,11 @@
 
-import 'package:camera/camera.dart';
-
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:skan/pages/scan_view.dart';
 import 'package:skan/pages/file_view.dart';
 import 'package:skan/pages/profile_view.dart';
+import 'package:skan/pages/scan_view.dart';
 import 'package:skan/provider/navbar_provider.dart';
 import 'package:skan/widgets/navbar_widget.dart';
 
