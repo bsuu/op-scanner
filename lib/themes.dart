@@ -43,11 +43,13 @@ class CustomThemes{
       headline1: TextStyle (
         color: Color.fromARGB(255, 241, 241, 241),
         fontSize: 18,
+        fontWeight: FontWeight.normal,
       ),
       bodyText1: TextStyle (
         color: Color.fromARGB(255, 118, 118, 118),
         fontSize: 14,
         height: 1.8,
+        fontWeight: FontWeight.normal,
       ),
     ),
     iconTheme: IconThemeData (
