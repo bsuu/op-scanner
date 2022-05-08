@@ -53,7 +53,20 @@ dependencies:
   path_provider: ^2.0.9
   open_file: ^3.2.1
 
+  skan_edge:
+    path: ../skan_edge
+
 dev_dependencies:
+
+
+
+
+
+
+
+
+
+
   flutter_test:
     sdk: flutter
 

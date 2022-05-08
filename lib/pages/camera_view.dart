@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/main.dart';
 import 'package:skan/octicons_icons.dart';
+import 'package:skan/pages/corners_view.dart';
 import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/widgets/flash_button.dart';
+import 'package:skan_edge/skan_edge.dart';
+
+import '../edge_detector.dart';
 
 class CameraViewState extends State<CameraView> {
   CameraController? cameraController;
@@ -40,7 +44,16 @@ class CameraViewState extends State<CameraView> {
       _provider.addTempImageLocation(image.path);
       widget.onPictureTaken(image.path);
 
-      Navigator.of(context).pop();
+      EdgeDetectionResult result = await EdgeDetector().detectEdges(image.path);
+      print(result);
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  CornerView(imagePath: image.path, edgeDetectionResult: result,)));
+
+      //Navigator.of(context).pop();
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -52,9 +65,9 @@ class CameraViewState extends State<CameraView> {
   Widget build(BuildContext context) {
     return Container(
       decoration:
-          BoxDecoration(color: AdaptiveTheme.of(context).theme.backgroundColor),
+      BoxDecoration(color: AdaptiveTheme.of(context).theme.backgroundColor),
       padding:
-          EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + 15),
+      EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + 15),
       child: Column(
         children: [
           Stack(
@@ -66,7 +79,7 @@ class CameraViewState extends State<CameraView> {
                       return Stack(children: [
                         ClipRRect(
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(8)),
+                          const BorderRadius.all(Radius.circular(8)),
                           child: CameraPreview(cameraController!),
                         ),
                         FlashButton(cameraController: cameraController),
@@ -83,13 +96,13 @@ class CameraViewState extends State<CameraView> {
           ),
           Expanded(
               child: GestureDetector(
-            child: Icon(
-              Octicons.circle_16,
-              size: 48,
-              color: AdaptiveTheme.of(context).theme.highlightColor,
-            ),
-            onTap: _takePicture,
-          )),
+                child: Icon(
+                  Octicons.circle_16,
+                  size: 48,
+                  color: AdaptiveTheme.of(context).theme.highlightColor,
+                ),
+                onTap: _takePicture,
+              )),
         ],
       ),
     );
