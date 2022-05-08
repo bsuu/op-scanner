@@ -877,6 +877,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  skan_edge:
+    dependency: "direct main"
+    description:
+      path: "../skan_edge"
+      relative: true
+    source: path
+    version: "0.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
