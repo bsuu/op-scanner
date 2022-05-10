@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +43,8 @@ class ScanViewState extends State<ScanView> {
 
   Future<void> _remove(int index) async {
     var tempImages = await _provider.getTempImageLocation() ?? [];
-    tempImages.removeAt(index);
+    String value = tempImages.removeAt(index);
+    File(value).delete();
     _provider.setTempImageLocation(tempImages);
   }
 

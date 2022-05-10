@@ -16,7 +16,6 @@ class CameraViewState extends State<CameraView> {
   CameraController? cameraController;
   Future<void>? _initController;
 
-  late final ScanFileStorage _provider;
 
   Future<void> _loadCamera() async {
     cameraController = CameraController(camera, ResolutionPreset.ultraHigh);
@@ -27,7 +26,6 @@ class CameraViewState extends State<CameraView> {
   @override
   void initState() {
     super.initState();
-    _provider = Provider.of<ScanFileStorage>(context, listen: false);
   }
 
   @override
@@ -41,17 +39,12 @@ class CameraViewState extends State<CameraView> {
       await _initController;
 
       final image = await cameraController!.takePicture();
-      _provider.addTempImageLocation(image.path);
-      widget.onPictureTaken(image.path);
-
-      EdgeDetectionResult result = await EdgeDetector().detectEdges(image.path);
-      print(result);
 
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  CornerView(imagePath: image.path, edgeDetectionResult: result,)));
+                  CornerView(imagePath: image.path, onPictureTaken: widget.onPictureTaken)));
 
       //Navigator.of(context).pop();
     } catch (e) {
@@ -88,10 +81,6 @@ class CameraViewState extends State<CameraView> {
                       return const Center(child: CircularProgressIndicator());
                     }
                   }),
-              // StatefulBuilder(
-              //     builder: ,
-              //
-              // ),
             ],
           ),
           Expanded(
