@@ -11,9 +11,11 @@ class ImageViewState extends State<ImageView> {
   Widget build(BuildContext context) {
     String lines = "";
 
-    for (TextRecognisionBlock trb in widget.scanFile.trb[widget.index]) {
-      for (String line in trb.lines) {
-        lines += line + '\n';
+    if (widget.scanFile.transcription == STATUS.DONE) {
+      for (TextRecognisionBlock trb in widget.scanFile.trb[widget.index]) {
+        for (String line in trb.lines) {
+          lines += line + '\n';
+        }
       }
     }
 
@@ -22,35 +24,43 @@ class ImageViewState extends State<ImageView> {
         Container(
           decoration: BoxDecoration(
               color: AdaptiveTheme.of(context).theme.backgroundColor),
-          padding: EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top, left: 8, right: 8, bottom: 8),
+          padding: EdgeInsets.only(
+              top: MediaQuery.of(context).viewPadding.top,
+              left: 8,
+              right: 8,
+              bottom: 8),
           child: Image.file(File(widget.scanFile.files[widget.index])),
         ),
-        Container(
-            decoration: BoxDecoration(
-                color: AdaptiveTheme.of(context).theme.backgroundColor),
-            padding:
-                EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top, left: 8, right: 8, bottom: 8),
-            child: ListView(
-              children: (lines != "")
-                  ? [
-                      Text(lines,
-                          style: AdaptiveTheme.of(context)
-                              .theme
-                              .textTheme
-                              .bodyText1)
-                    ]
-                  : [
-                      Center(
-                        child: Text(
-                          "Brak tekstu :(",
-                          style: AdaptiveTheme.of(context)
-                              .theme
-                              .textTheme
-                              .bodyText1,
+        if (widget.scanFile.transcription == STATUS.DONE)
+          Container(
+              decoration: BoxDecoration(
+                  color: AdaptiveTheme.of(context).theme.backgroundColor),
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).viewPadding.top,
+                  left: 8,
+                  right: 8,
+                  bottom: 8),
+              child: ListView(
+                children: (lines != "")
+                    ? [
+                        Text(lines,
+                            style: AdaptiveTheme.of(context)
+                                .theme
+                                .textTheme
+                                .bodyText1)
+                      ]
+                    : [
+                        Center(
+                          child: Text(
+                            "Brak tekstu :(",
+                            style: AdaptiveTheme.of(context)
+                                .theme
+                                .textTheme
+                                .bodyText1,
+                          ),
                         ),
-                      ),
-                    ],
-            ))
+                      ],
+              ))
       ],
     );
   }

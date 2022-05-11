@@ -113,9 +113,6 @@ class ItemViewState extends State<ItemView> {
               for (int i = 0; i < widget.scanFile.files.length; i++)
                 GestureDetector(
                   onTap: () {
-                    if (widget.scanFile.transcription != STATUS.DONE) {
-                      return;
-                    }
                     Navigator.push(
                         context,
                         MaterialPageRoute(
