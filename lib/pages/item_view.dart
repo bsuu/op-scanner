@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -167,7 +168,7 @@ class ItemViewState extends State<ItemView> {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       spacing: 15,
                       children: [
-                        Icon(Octicons.image_16,
+                        FaIcon(FontAwesomeIcons.fileImage,
                             size: 24,
                             color: AdaptiveTheme.of(context)
                                 .theme
@@ -213,7 +214,7 @@ class ItemViewState extends State<ItemView> {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       spacing: 15,
                       children: [
-                        Icon(Octicons.pencil_16,
+                        FaIcon(FontAwesomeIcons.fileLines,
                             size: 24,
                             color: AdaptiveTheme.of(context)
                                 .theme

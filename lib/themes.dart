@@ -8,7 +8,7 @@ import '../data/scan_file.dart';
 class CustomThemes{
   ThemeData light = ThemeData(
     brightness: Brightness.light,
-    bottomAppBarColor: Color.fromARGB(255, 36, 36, 36),
+    bottomAppBarColor: Color.fromARGB(12, 15, 15, 15),
     highlightColor: Color.fromARGB(255, 0, 159, 184),
     backgroundColor: Color.fromARGB(255, 241, 241, 241),
     primaryColor: Color.fromARGB(255, 210, 210, 210),
@@ -34,7 +34,7 @@ class CustomThemes{
 
   ThemeData dark = ThemeData(
     brightness: Brightness.dark,
-    bottomAppBarColor: Color.fromARGB(255, 240, 162, 2),
+    bottomAppBarColor: Color.fromARGB(77, 15, 15, 15),
     highlightColor: Color.fromARGB(255, 237, 69, 69),
     backgroundColor: Color.fromARGB(255, 36, 36, 36),
     primaryColor: Color.fromARGB(255, 25, 25, 25),

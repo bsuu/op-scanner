@@ -7,6 +7,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/octicons_icons.dart';
 import 'package:skan/widgets/dragable_bouble.dart';
@@ -50,7 +51,12 @@ class CornerViewState extends State<CornerView> {
 
   void _initCorners() async {
     edgeDetectionResult = await EdgeDetector().detectEdges(widget.imagePath);
-    List<Offset> test = [const Offset(0.0, 0.0), const Offset(1.0, 0.0), const Offset(1.0, 1.0), const Offset(0.0, 1.0)];
+    List<Offset> test = [
+      const Offset(0.0, 0.0),
+      const Offset(1.0, 0.0),
+      const Offset(1.0, 1.0),
+      const Offset(0.0, 1.0)
+    ];
     var resultPoints = [
       edgeDetectionResult.topLeft,
       edgeDetectionResult.topRight,
@@ -58,7 +64,12 @@ class CornerViewState extends State<CornerView> {
       edgeDetectionResult.bottomLeft
     ];
     if (listEquals(test, resultPoints)) {
-      resultPoints = [const Offset(0.2, 0.2), const Offset(0.8, 0.2), const Offset(0.8, 0.8), const Offset(0.2, 0.8)];
+      resultPoints = [
+        const Offset(0.2, 0.2),
+        const Offset(0.8, 0.2),
+        const Offset(0.8, 0.8),
+        const Offset(0.2, 0.8)
+      ];
     }
 
     setState(() {
@@ -172,38 +183,39 @@ class CornerViewState extends State<CornerView> {
                 )
               : const CircularProgressIndicator(),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            GestureDetector(
-                child: Container(
-                  child: const Icon(Octicons.log_16),
-                  width: buttonSize,
-                  height: buttonSize,
-                  margin: EdgeInsets.only(
-                      right: buttonSize / 2, bottom: buttonSize / 2),
-                  decoration: BoxDecoration(
-                      color: Colors.pink,
-                      borderRadius: BorderRadius.circular(buttonSize / 2)),
-                ),
-                onTap: () {
-                  _saveWithCorners(false);
-                }),
-            GestureDetector(
-                child: Container(
-                    child: const Icon(Octicons.plus_16),
+        if (cornersLoaded)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              GestureDetector(
+                  child: Container(
+                    child: const Icon(FontAwesomeIcons.floppyDisk),
                     width: buttonSize,
                     height: buttonSize,
-                    margin: EdgeInsets.only(bottom: buttonSize / 2),
+                    margin: EdgeInsets.only(
+                        right: buttonSize / 2, bottom: buttonSize / 2),
                     decoration: BoxDecoration(
                         color: Colors.pink,
-                        borderRadius: BorderRadius.circular(buttonSize / 2))),
-                onTap: () {
-                  _saveWithCorners(true);
-                })
-          ],
-        )
+                        borderRadius: BorderRadius.circular(buttonSize / 2)),
+                  ),
+                  onTap: () {
+                    _saveWithCorners(false);
+                  }),
+              GestureDetector(
+                  child: Container(
+                      child: const Icon(FontAwesomeIcons.plus),
+                      width: buttonSize,
+                      height: buttonSize,
+                      margin: EdgeInsets.only(bottom: buttonSize / 2),
+                      decoration: BoxDecoration(
+                          color: Colors.pink,
+                          borderRadius: BorderRadius.circular(buttonSize / 2))),
+                  onTap: () {
+                    _saveWithCorners(true);
+                  })
+            ],
+          )
       ],
     );
   }

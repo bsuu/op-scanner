@@ -2,6 +2,7 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/main.dart';
 import 'package:skan/octicons_icons.dart';
@@ -16,6 +17,7 @@ class CameraViewState extends State<CameraView> {
   CameraController? cameraController;
   Future<void>? _initController;
 
+  bool pictureInProgress = false;
 
   Future<void> _loadCamera() async {
     cameraController = CameraController(camera, ResolutionPreset.ultraHigh);
@@ -39,12 +41,14 @@ class CameraViewState extends State<CameraView> {
       await _initController;
 
       final image = await cameraController!.takePicture();
+      pictureInProgress = false;
 
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  CornerView(imagePath: image.path, onPictureTaken: widget.onPictureTaken)));
+              builder: (context) => CornerView(
+                  imagePath: image.path,
+                  onPictureTaken: widget.onPictureTaken)));
 
       //Navigator.of(context).pop();
     } catch (e) {
@@ -58,9 +62,9 @@ class CameraViewState extends State<CameraView> {
   Widget build(BuildContext context) {
     return Container(
       decoration:
-      BoxDecoration(color: AdaptiveTheme.of(context).theme.backgroundColor),
+          BoxDecoration(color: AdaptiveTheme.of(context).theme.backgroundColor),
       padding:
-      EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + 15),
+          EdgeInsets.only(top: MediaQuery.of(context).viewPadding.top + 15),
       child: Column(
         children: [
           Stack(
@@ -72,7 +76,7 @@ class CameraViewState extends State<CameraView> {
                       return Stack(children: [
                         ClipRRect(
                           borderRadius:
-                          const BorderRadius.all(Radius.circular(8)),
+                              const BorderRadius.all(Radius.circular(8)),
                           child: CameraPreview(cameraController!),
                         ),
                         FlashButton(cameraController: cameraController),
@@ -84,14 +88,23 @@ class CameraViewState extends State<CameraView> {
             ],
           ),
           Expanded(
-              child: GestureDetector(
-                child: Icon(
-                  Octicons.circle_16,
-                  size: 48,
-                  color: AdaptiveTheme.of(context).theme.highlightColor,
-                ),
-                onTap: _takePicture,
-              )),
+              child: (!pictureInProgress)
+                  ? GestureDetector(
+                      child: Icon(
+                        FontAwesomeIcons.circle,
+                        size: 48,
+                        color: AdaptiveTheme.of(context).theme.highlightColor,
+                      ),
+                      onTap: () {
+                        pictureInProgress = true;
+                        _takePicture();
+                      },
+                    )
+                  : Icon(
+                      FontAwesomeIcons.spinner,
+                      size: 48,
+                      color: AdaptiveTheme.of(context).theme.highlightColor,
+                    )),
         ],
       ),
     );

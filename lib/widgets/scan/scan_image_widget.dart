@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:skan/octicons_icons.dart';
 import 'package:skan/skan_colors.dart';
 
@@ -52,15 +53,14 @@ class ScanImageWidgetState extends State<ScanImageWidget> {
             direction: Axis.vertical,
             children: [
               IconButton(
-                  icon: Icon(Octicons.trash_16, color: AdaptiveTheme.of(context).theme.iconTheme.color,),
+                  icon: FaIcon(FontAwesomeIcons.trashCan, color: AdaptiveTheme.of(context).theme.iconTheme.color,),
               onPressed: () {
                 widget.onRemove(widget.index);
                 showHide();
               }),
-
               IconButton(
                   onPressed: showHide,
-                  icon: Icon(Octicons.x_16, color: AdaptiveTheme.of(context).theme.iconTheme.color,))
+                  icon: FaIcon(FontAwesomeIcons.xmark, color: AdaptiveTheme.of(context).theme.iconTheme.color,))
             ],
           ) : null,
         )

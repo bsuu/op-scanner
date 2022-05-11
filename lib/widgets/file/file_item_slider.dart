@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:skan/octicons_icons.dart';
 import 'package:skan/themes.dart';
@@ -51,7 +52,7 @@ class FileItemSliderState extends State<FileItemSlider> {
                           children: [
                         Row(
                           children: [
-                            const Icon(Octicons.calendar_16, size: 18),
+                            const FaIcon(FontAwesomeIcons.calendar, size: 18),
                             Text(
                                 "  ${DateFormat("yyyy-MM-dd HH:mm").format(widget.date)}",
                                 style: const TextStyle(fontSize: 16)),
@@ -59,7 +60,7 @@ class FileItemSliderState extends State<FileItemSlider> {
                         ),
                         Row(
                           children: [
-                            const Icon(Octicons.file_diff_16, size: 18),
+                            const FaIcon(FontAwesomeIcons.fileZipper, size: 18),
                             Text("  ${widget.amount}",
                                 style: const TextStyle(fontSize: 16)),
                           ],
@@ -69,9 +70,9 @@ class FileItemSliderState extends State<FileItemSlider> {
                     onTap: () {
                       widget.onRemove(widget.index);
                     },
-                    child: const Icon(
-                      Octicons.trash_16,
-                      size: 30,
+                    child: const FaIcon(
+                      FontAwesomeIcons.trashCan,
+                      size: 24,
                       color: Colors.red,
                     ),
                   ),

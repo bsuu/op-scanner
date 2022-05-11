@@ -1,6 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:skan/data/text_recognision_block.dart';
 import 'package:skan/themes.dart';
@@ -136,7 +137,7 @@ class FileItemState extends State<FileItem> {
                     spacing: 20,
                     children: [
                       GestureDetector(
-                        child: Icon(Octicons.info_16,
+                        child: FaIcon(FontAwesomeIcons.circleInfo,
                             color: AdaptiveTheme.of(context)
                                 .theme
                                 .iconTheme
@@ -144,7 +145,7 @@ class FileItemState extends State<FileItem> {
                         onTap: _infoTab,
                       ),
                       GestureDetector(
-                        child: Icon(Octicons.beaker_16,
+                        child: FaIcon(FontAwesomeIcons.flask,
                             color: getIconColor(widget.scanFile.transcription)
                                 .color),
                         onTap: () {
@@ -155,7 +156,7 @@ class FileItemState extends State<FileItem> {
                         },
                       ),
                       GestureDetector(
-                        child: Icon(Octicons.paper_airplane_16,
+                        child: FaIcon(FontAwesomeIcons.solidPaperPlane,
                             color: getIconColor(widget.scanFile.cloud).color),
                         //onTap: _progressTab,
                       )

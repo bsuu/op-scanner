@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reorderables/reorderables.dart';
 import 'package:skan/widgets/scan/scan_image_widget.dart';
 
@@ -51,7 +52,7 @@ class ScanImagePreviewState extends State<ScanImagePreview> {
                 border: true,
                 reactive: false,
                 child: GestureDetector(
-                  child: const Icon(Octicons.plus_16, size: 48),
+                  child: const Icon(FontAwesomeIcons.plus, size: 48),
                   onTap: () {
                     Navigator.push(
                         context,

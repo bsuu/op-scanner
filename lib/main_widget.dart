@@ -2,6 +2,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/pages/file_view.dart';
 import 'package:skan/pages/profile_view.dart';
@@ -52,9 +53,9 @@ class MainWidgetState extends State<MainWidget> {
             ),
             bottomNavigationBar: Navbar(
                 items: [
-                  Icon(Octicons.home_16, color: AdaptiveTheme.of(context).theme.iconTheme.color,),
-                  Icon(Octicons.video_16, color: AdaptiveTheme.of(context).theme.iconTheme.color,),
-                  Icon(Octicons.person_16, color: AdaptiveTheme.of(context).theme.iconTheme.color,),],
+                  Icon(FontAwesomeIcons.list, color: AdaptiveTheme.of(context).theme.iconTheme.color,),
+                  Icon(FontAwesomeIcons.cameraRetro, color: AdaptiveTheme.of(context).theme.iconTheme.color,),
+                  Icon(FontAwesomeIcons.userNinja, color: AdaptiveTheme.of(context).theme.iconTheme.color,),],
                 onTap: changeIndexState,
 
             ),

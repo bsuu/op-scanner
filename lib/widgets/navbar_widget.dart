@@ -27,7 +27,7 @@ class NavbarState extends State<Navbar> {
             height: double.infinity,
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(8)),
-              color: AdaptiveTheme.of(context).theme.highlightColor,
+              color: AdaptiveTheme.of(context).theme.primaryColorDark,
             ),
           ),
           Container(
