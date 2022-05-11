@@ -5,6 +5,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/octicons_icons.dart';
@@ -49,13 +50,19 @@ class CornerViewState extends State<CornerView> {
 
   void _initCorners() async {
     edgeDetectionResult = await EdgeDetector().detectEdges(widget.imagePath);
+    List<Offset> test = [const Offset(0.0, 0.0), const Offset(1.0, 0.0), const Offset(1.0, 1.0), const Offset(0.0, 1.0)];
+    var resultPoints = [
+      edgeDetectionResult.topLeft,
+      edgeDetectionResult.topRight,
+      edgeDetectionResult.bottomRight,
+      edgeDetectionResult.bottomLeft
+    ];
+    if (listEquals(test, resultPoints)) {
+      resultPoints = [const Offset(0.2, 0.2), const Offset(0.8, 0.2), const Offset(0.8, 0.8), const Offset(0.2, 0.8)];
+    }
+
     setState(() {
-      points = [
-        edgeDetectionResult.topLeft,
-        edgeDetectionResult.topRight,
-        edgeDetectionResult.bottomRight,
-        edgeDetectionResult.bottomLeft
-      ];
+      points = resultPoints;
       cornersLoaded = true;
     });
   }
@@ -68,126 +75,136 @@ class CornerViewState extends State<CornerView> {
     _initCorners();
   }
 
-  void _saveWithCorners() async {
+  void _saveWithCorners(bool nextPhoto) async {
     await SkanEdge.processImage(widget.imagePath, edgeDetectionResult);
     _provider.addTempImageLocation(widget.imagePath);
     widget.onPictureTaken(widget.imagePath);
-    
+
     Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    if (!nextPhoto) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    double buttonSize = MediaQuery.of(context).size.width;
-    return FittedBox(
-      child: imageLoaded
-          ? Stack(
-              children: [
-                SizedBox(
-                    width: image.width.toDouble(),
-                    height: image.height.toDouble(),
-                    child: CustomPaint(
-                        painter: CornerPainter(
-                      image: image,
-                      corners: cornersLoaded ? points : [],
-                    ))),
-                if (cornersLoaded)
-                  DragableBouble(
-                    size: boubleSize,
-                    onDrag: (position) {
-                      edgeDetectionResult.topLeft += Offset(
-                          position.dx / image.width.toDouble(),
-                          position.dy / image.height.toDouble());
-                      setState(() {
-                        points[0] += Offset(
-                            position.dx / image.width.toDouble(),
-                            position.dy / image.height.toDouble());
-                      });
-                    },
-                    position: Offset(points[0].dx * image.width.toDouble(),
-                        points[0].dy * image.height.toDouble()),
-                  ),
-                if (cornersLoaded)
-                  DragableBouble(
-                    size: boubleSize,
-                    onDrag: (position) {
-                      edgeDetectionResult.topRight += Offset(
-                          position.dx / image.width.toDouble(),
-                          position.dy / image.height.toDouble());
-                      setState(() {
-                        points[1] += Offset(
-                            position.dx / image.width.toDouble(),
-                            position.dy / image.height.toDouble());
-                      });
-                    },
-                    position: Offset(points[1].dx * image.width.toDouble(),
-                        points[1].dy * image.height.toDouble()),
-                  ),
-                if (cornersLoaded)
-                  DragableBouble(
-                    size: boubleSize,
-                    onDrag: (position) {
-                      edgeDetectionResult.bottomRight += Offset(
-                          position.dx / image.width.toDouble(),
-                          position.dy / image.height.toDouble());
-                      setState(() {
-                        points[2] += Offset(
-                            position.dx / image.width.toDouble(),
-                            position.dy / image.height.toDouble());
-                      });
-                    },
-                    position: Offset(points[2].dx * image.width.toDouble(),
-                        points[2].dy * image.height.toDouble()),
-                  ),
-                if (cornersLoaded)
-                  DragableBouble(
-                    size: boubleSize,
-                    onDrag: (position) {
-                      edgeDetectionResult.bottomLeft += Offset(
-                          position.dx / image.width.toDouble(),
-                          position.dy / image.height.toDouble());
-                      setState(() {
-                        points[3] += Offset(
-                            position.dx / image.width.toDouble(),
-                            position.dy / image.height.toDouble());
-                      });
-                    },
-                    position: Offset(points[3].dx * image.width.toDouble(),
-                        points[3].dy * image.height.toDouble()),
-                  ),
-                Positioned(
-                  child: Row(
-
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        child: Container(
-                          child: Icon(Octicons.briefcase_16),
-                          width: buttonSize,
-                          height: buttonSize,
-                          decoration: BoxDecoration(
-                              color: Colors.pink,
-                              borderRadius: BorderRadius.circular(buttonSize / 2)),
-                        ),
-                        onTap: _saveWithCorners,
-                      )
-                      ,
-                      Container(
-                        width: buttonSize,
-                        height: buttonSize,
-                        decoration: BoxDecoration(
-                            color: Colors.pink,
-                            borderRadius: BorderRadius.circular(buttonSize / 2)),
+    double buttonSize = MediaQuery.of(context).size.width / 7;
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        FittedBox(
+          child: imageLoaded
+              ? Stack(
+                  children: [
+                    SizedBox(
+                        width: image.width.toDouble(),
+                        height: image.height.toDouble(),
+                        child: CustomPaint(
+                            painter: CornerPainter(
+                          image: image,
+                          corners: cornersLoaded ? points : [],
+                        ))),
+                    if (cornersLoaded)
+                      DragableBouble(
+                        size: boubleSize,
+                        onDrag: (position) {
+                          edgeDetectionResult.topLeft += Offset(
+                              position.dx / image.width.toDouble(),
+                              position.dy / image.height.toDouble());
+                          setState(() {
+                            points[0] += Offset(
+                                position.dx / image.width.toDouble(),
+                                position.dy / image.height.toDouble());
+                          });
+                        },
+                        position: Offset(points[0].dx * image.width.toDouble(),
+                            points[0].dy * image.height.toDouble()),
                       ),
-                    ],
-                  ),
-                  bottom: 0,
+                    if (cornersLoaded)
+                      DragableBouble(
+                        size: boubleSize,
+                        onDrag: (position) {
+                          edgeDetectionResult.topRight += Offset(
+                              position.dx / image.width.toDouble(),
+                              position.dy / image.height.toDouble());
+                          setState(() {
+                            points[1] += Offset(
+                                position.dx / image.width.toDouble(),
+                                position.dy / image.height.toDouble());
+                          });
+                        },
+                        position: Offset(points[1].dx * image.width.toDouble(),
+                            points[1].dy * image.height.toDouble()),
+                      ),
+                    if (cornersLoaded)
+                      DragableBouble(
+                        size: boubleSize,
+                        onDrag: (position) {
+                          edgeDetectionResult.bottomRight += Offset(
+                              position.dx / image.width.toDouble(),
+                              position.dy / image.height.toDouble());
+                          setState(() {
+                            points[2] += Offset(
+                                position.dx / image.width.toDouble(),
+                                position.dy / image.height.toDouble());
+                          });
+                        },
+                        position: Offset(points[2].dx * image.width.toDouble(),
+                            points[2].dy * image.height.toDouble()),
+                      ),
+                    if (cornersLoaded)
+                      DragableBouble(
+                        size: boubleSize,
+                        onDrag: (position) {
+                          edgeDetectionResult.bottomLeft += Offset(
+                              position.dx / image.width.toDouble(),
+                              position.dy / image.height.toDouble());
+                          setState(() {
+                            points[3] += Offset(
+                                position.dx / image.width.toDouble(),
+                                position.dy / image.height.toDouble());
+                          });
+                        },
+                        position: Offset(points[3].dx * image.width.toDouble(),
+                            points[3].dy * image.height.toDouble()),
+                      ),
+                  ],
                 )
-              ],
-            )
-          : const CircularProgressIndicator(),
+              : const CircularProgressIndicator(),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            GestureDetector(
+                child: Container(
+                  child: const Icon(Octicons.log_16),
+                  width: buttonSize,
+                  height: buttonSize,
+                  margin: EdgeInsets.only(
+                      right: buttonSize / 2, bottom: buttonSize / 2),
+                  decoration: BoxDecoration(
+                      color: Colors.pink,
+                      borderRadius: BorderRadius.circular(buttonSize / 2)),
+                ),
+                onTap: () {
+                  _saveWithCorners(false);
+                }),
+            GestureDetector(
+                child: Container(
+                    child: const Icon(Octicons.plus_16),
+                    width: buttonSize,
+                    height: buttonSize,
+                    margin: EdgeInsets.only(bottom: buttonSize / 2),
+                    decoration: BoxDecoration(
+                        color: Colors.pink,
+                        borderRadius: BorderRadius.circular(buttonSize / 2))),
+                onTap: () {
+                  _saveWithCorners(true);
+                })
+          ],
+        )
+      ],
     );
   }
 }
@@ -196,7 +213,9 @@ class CornerView extends StatefulWidget {
   final String imagePath;
   final Function onPictureTaken;
 
-  const CornerView({Key? key, required this.imagePath, required this.onPictureTaken}) : super(key: key);
+  const CornerView(
+      {Key? key, required this.imagePath, required this.onPictureTaken})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => CornerViewState();

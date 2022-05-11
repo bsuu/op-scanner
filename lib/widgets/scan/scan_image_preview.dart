@@ -49,6 +49,7 @@ class ScanImagePreviewState extends State<ScanImagePreview> {
           ReorderableWidget(
               child: ScanImageWidget(
                 border: true,
+                reactive: false,
                 child: GestureDetector(
                   child: const Icon(Octicons.plus_16, size: 48),
                   onTap: () {

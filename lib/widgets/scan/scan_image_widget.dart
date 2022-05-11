@@ -7,6 +7,9 @@ class ScanImageWidgetState extends State<ScanImageWidget> {
   bool _isShowed = false;
 
   void showHide() {
+    if (!widget.reactive) {
+      return;
+    }
     setState(() {
       _isShowed = !_isShowed;
     });
@@ -69,12 +72,12 @@ class ScanImageWidgetState extends State<ScanImageWidget> {
 class ScanImageWidget extends StatefulWidget {
   Widget child;
   bool border;
-
+  bool reactive = true;
   int index;
 
   Function onRemove;
 
-  ScanImageWidget({Key? key, required this.child, this.border = false, required this.onRemove, this.index = 0})
+  ScanImageWidget({Key? key, required this.child, this.border = false, required this.onRemove, this.index = 0, this.reactive = true})
       : super(key: key);
 
   @override
