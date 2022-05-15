@@ -1,8 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-
-import '../octicons_icons.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class FlashButtonState extends State<FlashButton> {
   bool click = false;
@@ -19,7 +18,7 @@ class FlashButtonState extends State<FlashButton> {
           backgroundColor: Colors.transparent,
           child: Container(
             padding: const EdgeInsets.only(top: 10),
-            child: Icon(click ? Octicons.flash_on_outlined : Octicons.flash_off_sharp, color: Colors.orange, size: 20,),
+            child: Icon(click ? FontAwesomeIcons.bolt : FontAwesomeIcons.bolt, color: Colors.orange, size: 20,),
           ),
           onPressed: () {
             setState(() {

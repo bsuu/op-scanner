@@ -1,9 +1,7 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-
-import '../octicons_icons.dart';
-
 
 class OptionItemState extends State<OptionItem> {
   @override
@@ -32,8 +30,8 @@ class OptionItemState extends State<OptionItem> {
                     }
                   },
                   customIcons: [
-                    const Icon(Octicons.sun_16, color: Colors.orange, size: 16,),
-                    Icon(Octicons.moon_16, color: AdaptiveTheme.of(context).theme.primaryColor, size: 16,)
+                    const Icon(FontAwesomeIcons.sun, color: Colors.orange, size: 16,),
+                    Icon(FontAwesomeIcons.moon, color: AdaptiveTheme.of(context).theme.primaryColor, size: 16,)
                   ],
                 )
             ],

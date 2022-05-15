@@ -9,7 +9,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:skan/octicons_icons.dart';
 import 'package:skan/widgets/dragable_bouble.dart';
 import 'dart:ui' as ui;
 
@@ -87,7 +86,13 @@ class CornerViewState extends State<CornerView> {
   }
 
   void _saveWithCorners(bool nextPhoto) async {
-    await SkanEdge.processImage(widget.imagePath, edgeDetectionResult);
+
+    edgeDetectionResult.topLeft = points[0];
+    edgeDetectionResult.topRight = points[1];
+    edgeDetectionResult.bottomRight = points[2];
+    edgeDetectionResult.bottomLeft = points[3];
+
+    await SkanEdge.processImage(widget.imagePath, edgeDetectionResult, 99, 6);
     _provider.addTempImageLocation(widget.imagePath);
     widget.onPictureTaken(widget.imagePath);
 

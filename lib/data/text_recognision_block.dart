@@ -5,8 +5,8 @@ part 'text_recognision_block.g.dart';
 
 @JsonSerializable()
 class Tuple {
-  final double t1;
-  final double t2;
+  final int t1;
+  final int t2;
 
   Tuple(this.t1, this.t2);
 

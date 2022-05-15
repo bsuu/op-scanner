@@ -7,8 +7,8 @@ part of 'text_recognision_block.dart';
 // **************************************************************************
 
 Tuple _$TupleFromJson(Map<String, dynamic> json) => Tuple(
-      (json['t1'] as num).toDouble(),
-      (json['t2'] as num).toDouble(),
+      (json['t1'] as num).toInt(),
+      (json['t2'] as num).toInt(),
     );
 
 Map<String, dynamic> _$TupleToJson(Tuple instance) => <String, dynamic>{

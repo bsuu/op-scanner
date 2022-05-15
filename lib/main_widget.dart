@@ -10,8 +10,6 @@ import 'package:skan/pages/scan_view.dart';
 import 'package:skan/provider/navbar_provider.dart';
 import 'package:skan/widgets/navbar_widget.dart';
 
-import 'octicons_icons.dart';
-
 class MainWidget extends StatefulWidget {
 
 

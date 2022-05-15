@@ -1,8 +1,8 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:skan/octicons_icons.dart';
 
 import '../provider/google_sign_in.dart';
 
@@ -32,7 +32,7 @@ class ProfileWidgetState extends State<ProfileWidget> {
                             final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
                             provider.logout();
                           },
-                          icon: Icon(Octicons.sign_out_16, size: 30, color: AdaptiveTheme.of(context).theme.errorColor)),
+                          icon: Icon(FontAwesomeIcons.arrowRightFromBracket, size: 30, color: AdaptiveTheme.of(context).theme.errorColor)),
                     ],
                   ),
                 ],

@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reorderables/reorderables.dart';
 import 'package:skan/widgets/scan/scan_image_widget.dart';
 
-import '../../octicons_icons.dart';
 import '../../pages/camera_view.dart';
 
 class ScanImagePreviewState extends State<ScanImagePreview> {

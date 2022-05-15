@@ -1,3 +1,6 @@
+
+import 'dart:math';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +11,6 @@ import 'package:skan/themes.dart';
 import 'package:skan/widgets/file/file_item_slider.dart';
 
 import '../../data/scan_file.dart';
-import '../../octicons_icons.dart';
 
 class FileItemState extends State<FileItem> {
   FileItemSliderType state = FileItemSliderType.hidden;
@@ -34,8 +36,8 @@ class FileItemState extends State<FileItem> {
           lines.add(element.text);
         }
         List<Tuple> points = [];
-        for (Offset element in block.cornerPoints) {
-          points.add(Tuple(element.dx, element.dy));
+        for (Point<int> element in block.cornerPoints) {
+          points.add(Tuple(element.x, element.y));
         }
         trbList.add(TextRecognisionBlock(lang, lines, points));
       }

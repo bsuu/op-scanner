@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/main.dart';
-import 'package:skan/octicons_icons.dart';
 import 'package:skan/pages/corners_view.dart';
 import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/widgets/flash_button.dart';
