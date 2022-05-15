@@ -26,7 +26,7 @@ class ProfileViewState extends State<ProfileView> {
                 }
               }
             ),
-            const OptionItem(optionName: "Motyw jasnsy czy ciemny?")
+            OptionItem(optionName: "Motyw jasnsy czy ciemny?")
           ]
         )
     );

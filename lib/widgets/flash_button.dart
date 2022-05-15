@@ -9,9 +9,10 @@ class FlashButtonState extends State<FlashButton> {
 
   @override
   Widget build(BuildContext context) {
-    double height = (MediaQuery.of(context).size.height);
+    double height = MediaQuery.of(context).size.height;
+    var heightHolder = height.roundToDouble();
     return Container(
-      height: height - 160,
+      height: heightHolder - (heightHolder/5),
       alignment: Alignment.bottomRight,
       child: FloatingActionButton(
           focusColor: AdaptiveTheme.of(context).theme.highlightColor,
