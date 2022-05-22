@@ -37,6 +37,7 @@ dependencies:
   flag: ^6.0.0
   firebase_core: ^1.14.0
   firebase_auth: ^3.3.12
+  firebase_storage: ^10.2.16
   google_sign_in: ^5.2.4
   font_awesome_flutter: ^10.1.0
 
@@ -52,6 +53,7 @@ dependencies:
   pdf: ^3.7.4
   path_provider: ^2.0.9
   open_file: ^3.2.1
+  archive: ^3.3.0
 
   skan_edge:
     path: ../skan_edge

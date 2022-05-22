@@ -1,14 +1,19 @@
 
 import 'dart:math';
-
+import 'dart:io';
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:archive/archive_io.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:skan/data/text_recognision_block.dart';
 import 'package:skan/themes.dart';
 import 'package:skan/widgets/file/file_item_slider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:archive/archive.dart';
 
 import '../../data/scan_file.dart';
 
@@ -53,6 +58,45 @@ class FileItemState extends State<FileItem> {
     sf.trb = trb;
     textRecognizer.close();
     sf.transcription = STATUS.DONE;
+    widget.onSave();
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _progressTab();
+      setState(() {
+        progress = -1;
+      });
+    });
+  }
+
+  Future<void> _sendToDatabase(ScanFile scan) async {
+    setState(() {
+      scan.cloud = STATUS.RUNNING;
+      progress = 0;
+    });
+    final user = FirebaseAuth.instance.currentUser!;
+    final userMail = user.email;
+    if (userMail != null) {
+      final storage = FirebaseStorage.instance.ref();
+      final fileName = widget.scanFile.name;
+      final files = storage.child("$userMail/$fileName.zip");
+      final encoder = ZipFileEncoder();
+      Directory tempDir = await getTemporaryDirectory();
+      String tempPath = tempDir.path;
+      final File file = File('$tempPath/fileData.json');
+      await file.writeAsString(widget.scanFile.toJson().toString());
+      encoder.create('$tempPath/$fileName');
+      encoder.addFile(file);
+      for (int i = 0; i < widget.scanFile.files.length; i++) {
+        encoder.addFile(File(widget.scanFile.files[i]));
+      }
+      encoder.close();
+      final task = files.putFile(File('$tempPath/$fileName'));
+      task.snapshotEvents.listen((event) {
+        setState(() {
+          progress = (event.bytesTransferred.toDouble() / event.totalBytes.toDouble() * 100).toInt();
+        });
+      });
+    }
+    scan.cloud = STATUS.DONE;
     widget.onSave();
     Future.delayed(const Duration(milliseconds: 500), () {
       _progressTab();
@@ -160,7 +204,12 @@ class FileItemState extends State<FileItem> {
                       GestureDetector(
                         child: FaIcon(FontAwesomeIcons.solidPaperPlane,
                             color: getIconColor(widget.scanFile.cloud).color),
-                        //onTap: _progressTab,
+                        onTap: () {
+                          if (progress < 0) {
+                            _progressTab();
+                            _sendToDatabase(widget.scanFile);
+                          }
+                        }
                       )
                     ],
                   ))
