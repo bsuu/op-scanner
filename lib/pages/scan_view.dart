@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/data/scan_file.dart';
@@ -75,6 +76,9 @@ class ScanViewState extends State<ScanView> {
                   padding: const EdgeInsets.only(top: 10),
                   child: TextField(
                     controller: textController,
+                    inputFormatters: [
+                      LengthLimitingTextInputFormatter(30),
+                    ],
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(

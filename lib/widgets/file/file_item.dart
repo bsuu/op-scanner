@@ -13,7 +13,6 @@ import 'package:skan/themes.dart';
 import 'package:skan/widgets/file/file_item_slider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:archive/archive.dart';
 
 import '../../data/scan_file.dart';
 
@@ -145,7 +144,57 @@ class FileItemState extends State<FileItem> {
             date: widget.scanFile.created,
             progress: progress,
             onRemove: (index) {
-              widget.onRemove(index);
+              showDialog(
+                context: context,
+                builder: (context) => Dialog(
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
+                  backgroundColor: AdaptiveTheme.of(context).theme.backgroundColor,
+                  elevation: 0,
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 14, left: 14, top: 16),
+                    padding: const EdgeInsets.all(6),
+                    height: 175,
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 14),
+                          child: Wrap(
+                                alignment: WrapAlignment.center,
+                                children: [
+                                  Text('Usunąć "' + widget.scanFile.name + '"?', style: AdaptiveTheme.of(context).theme.textTheme.headline1),
+                                ],
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 14),
+                          child: Wrap(
+                                children: [
+                                  Text('Usunięcie pliku zapisanego w chmurze spowoduje również usunięcie pilku w chmurze. Czy na pewno usunąć?',
+                                      style: AdaptiveTheme.of(context).theme.textTheme.bodyText1),
+                                ],
+                              ),
+                        ),
+                        Wrap(
+                        alignment: WrapAlignment.center,
+                        children: [
+                          TextButton(
+                            child: Text('Nie', style: AdaptiveTheme.of(context).theme.textTheme.headline1),
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                          TextButton(
+                            child: Text('Tak', style: AdaptiveTheme.of(context).theme.textTheme.headline1),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              widget.onRemove(index);
+                              },
+                          ),
+                        ],
+                      ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
             },
           ),
           Container(
@@ -205,7 +254,7 @@ class FileItemState extends State<FileItem> {
                         child: FaIcon(FontAwesomeIcons.solidPaperPlane,
                             color: getIconColor(widget.scanFile.cloud).color),
                         onTap: () {
-                          if (progress < 0) {
+                          if (progress < 0 && widget.scanFile.cloud != STATUS.DONE) {
                             _progressTab();
                             _sendToDatabase(widget.scanFile);
                           }
