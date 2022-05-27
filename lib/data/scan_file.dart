@@ -17,6 +17,7 @@ enum STATUS {
 
 @JsonSerializable()
 class ScanFile {
+  final String uuid;
   final String name;
   final String type;
 
@@ -30,7 +31,7 @@ class ScanFile {
 
 
 
-  ScanFile({required this.name, required this.type, required this.transcription, required this.cloud, required this.created, this.files = const [], this.trb = const []});
+  ScanFile({ required this.uuid, required this.name, required this.type, required this.transcription, required this.cloud, required this.created, this.files = const [], this.trb = const []});
 
   factory ScanFile.fromJson(Map<String, dynamic> json) => _$ScanFileFromJson(json);
   Map<String, dynamic> toJson() => _$ScanFileToJson(this);

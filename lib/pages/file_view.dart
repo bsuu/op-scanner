@@ -1,5 +1,11 @@
+import 'dart:io';
+
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/data/scan_file.dart';
 import 'package:skan/provider/scan_file_storage.dart';
@@ -23,10 +29,40 @@ class FileViewState extends State<FileView> {
   void initState() {
     super.initState();
     _provider = Provider.of<ScanFileStorage>(context, listen: false);
+    loadFilesFromClud();
   }
 
   Future loadLocalData() async {
     return await _provider.getFiles() ?? [];
+  }
+
+  void loadFilesFromClud () async {
+    final user = FirebaseAuth.instance.currentUser!;
+    final String? userMail = user.email;
+    if (userMail == null) return;
+
+    Reference fbs = FirebaseStorage.instance.ref();
+    Reference fbsf = fbs.child("$userMail");
+    ListResult lista = await fbsf.listAll();
+    var temp = await _provider.getFiles() ?? [];
+    for (var cloudFile in lista.items) {
+      bool contains = false;
+      for (var localFile in temp) {
+        if (cloudFile.fullPath.contains(localFile.uuid)) {
+          contains = true;
+          break;
+        }
+      }
+      if (!contains) {
+        print("Sync plikow");
+        Reference fileCloud = FirebaseStorage.instance.ref(cloudFile.fullPath);
+        final Directory tempDir = await getTemporaryDirectory();
+        File tempFile = File(tempDir.path + "/" + cloudFile.name);
+        await fileCloud.writeToFile(tempFile);
+        await tempFile.create();
+        await OpenFile.open(tempFile.path);
+      }
+    }
   }
 
   Future<void> _save() async {

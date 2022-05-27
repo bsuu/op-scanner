@@ -75,13 +75,13 @@ class FileItemState extends State<FileItem> {
     final userMail = user.email;
     if (userMail != null) {
       final storage = FirebaseStorage.instance.ref();
-      final fileName = widget.scanFile.name;
+      final fileName = widget.scanFile.uuid;
       final files = storage.child("$userMail/$fileName.zip");
       final encoder = ZipFileEncoder();
       Directory tempDir = await getTemporaryDirectory();
       String tempPath = tempDir.path;
       final File file = File('$tempPath/fileData.json');
-      await file.writeAsString(widget.scanFile.toJson().toString());
+      file.writeAsStringSync(widget.scanFile.toJson().toString());
       encoder.create('$tempPath/$fileName');
       encoder.addFile(file);
       for (int i = 0; i < widget.scanFile.files.length; i++) {

@@ -4,10 +4,12 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:skan/data/scan_file.dart';
 import 'package:skan/provider/scan_file_storage.dart';
 import 'package:skan/widgets/scan/scan_image_preview.dart';
+import 'package:uuid/uuid.dart';
 
 class ScanViewState extends State<ScanView> {
   late final ScanFileStorage _provider;
@@ -93,24 +95,32 @@ class ScanViewState extends State<ScanView> {
                 GestureDetector(
                     onTap: () async {
                       String name = textController.text;
+                      if (name == '') return;
 
-                      if (name == '') {
-                        return;
+                      var tempFileLocations = await _provider.getTempImageLocation() ?? [];
+                      if (tempFileLocations.isEmpty) return;
+                      var uid = const Uuid();
+                      String uuid = uid.v4();
+                      //Relocate files
+                      List<String> location = [];
+                      Directory appFolder = await getApplicationDocumentsDirectory();
+                      String afs = appFolder.path;
+                      Directory scansFolder = await Directory("$afs/$uuid/").create();
+                      String aff = scansFolder.path;
+                      for (String file in tempFileLocations) {
+                        String tp = "$aff/${uid.v4()}.png";
+                        File tf = File(file).renameSync(tp);
+                        location.add(tp);
                       }
-
-                      var temp = await _provider.getTempImageLocation() ?? [];
-
-                      if (temp.isEmpty) {
-                        return;
-                      }
-
                       ScanFile sf = ScanFile(
+                          uuid: uuid,
                           name: name,
                           type: "image",
                           cloud: STATUS.NONE,
                           transcription: STATUS.NONE,
                           created: DateTime.now(),
-                          files: temp);
+                          files: location);
+
                       _provider.addFiles(sf);
                       _provider.setTempImageLocation([]);
                       textController.text = "";

@@ -31,7 +31,6 @@ class ScanApp extends StatelessWidget {
 
   const ScanApp({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
 

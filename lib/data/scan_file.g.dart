@@ -7,6 +7,7 @@ part of 'scan_file.dart';
 // **************************************************************************
 
 ScanFile _$ScanFileFromJson(Map<String, dynamic> json) => ScanFile(
+      uuid: json['uuid'] as String,
       name: json['name'] as String,
       type: json['type'] as String,
       transcription: $enumDecode(_$STATUSEnumMap, json['transcription']),
@@ -25,6 +26,7 @@ ScanFile _$ScanFileFromJson(Map<String, dynamic> json) => ScanFile(
     );
 
 Map<String, dynamic> _$ScanFileToJson(ScanFile instance) => <String, dynamic>{
+      'uuid': instance.uuid,
       'name': instance.name,
       'type': instance.type,
       'transcription': _$STATUSEnumMap[instance.transcription],

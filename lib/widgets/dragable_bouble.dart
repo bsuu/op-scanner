@@ -1,6 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+class DragableBouble extends StatefulWidget {
+  const DragableBouble({
+    required this.size,
+    required this.onDrag,
+    required this.position
+  });
+
+  final double size;
+  final Function onDrag;
+  final Offset position;
+
+  @override
+  State<StatefulWidget> createState() => DragableBoubleState();
+}
+
+
 class DragableBoubleState extends State<DragableBouble> {
   bool dragging = false;
 
@@ -21,7 +37,7 @@ class DragableBoubleState extends State<DragableBouble> {
             decoration: BoxDecoration(
                 color: Colors.red,
                 borderRadius: BorderRadius.circular(boubleSize() / 2)),
-                duration: const Duration(milliseconds: 50),
+            duration: const Duration(milliseconds: 50),
             curve: Curves.easeInOut,
           )
       ),
@@ -59,19 +75,4 @@ class DragableBoubleState extends State<DragableBouble> {
 
     widget.onDrag(data.delta);
   }
-}
-
-class DragableBouble extends StatefulWidget {
-  const DragableBouble({
-    required this.size,
-    required this.onDrag,
-    required this.position
-  });
-
-  final double size;
-  final Function onDrag;
-  final Offset position;
-
-  @override
-  State<StatefulWidget> createState() => DragableBoubleState();
 }
