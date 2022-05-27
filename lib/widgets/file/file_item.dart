@@ -144,57 +144,78 @@ class FileItemState extends State<FileItem> {
             date: widget.scanFile.created,
             progress: progress,
             onRemove: (index) {
-              showDialog(
-                context: context,
-                builder: (context) => Dialog(
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(16))),
-                  backgroundColor: AdaptiveTheme.of(context).theme.backgroundColor,
-                  elevation: 0,
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 14, left: 14, top: 16),
-                    padding: const EdgeInsets.all(6),
-                    height: 175,
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 14),
+              if (widget.scanFile.cloud == STATUS.DONE) {
+                showDialog(
+                  context: context,
+                  builder: (context) =>
+                      Dialog(
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(16))),
+                        backgroundColor: AdaptiveTheme
+                            .of(context)
+                            .theme
+                            .backgroundColor,
+                        elevation: 0,
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                              right: 14, left: 14, top: 16),
+                          padding: const EdgeInsets.all(6),
+                          height: (MediaQuery.of(context).size.height).toDouble()/5,
                           child: Wrap(
+                            alignment: WrapAlignment.spaceAround,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 14),
+                                child: Text('Usunąć "' + widget.scanFile.name +
+                                        '"?', style: AdaptiveTheme
+                                        .of(context)
+                                        .theme
+                                        .textTheme
+                                        .headline1),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(bottom: 14),
+                                child: Text(
+                                        'Usunięcie pliku zapisanego w chmurze spowoduje również usunięcie pilku w chmurze. Czy na pewno usunąć?',
+                                        style: AdaptiveTheme
+                                            .of(context)
+                                            .theme
+                                            .textTheme
+                                            .bodyText1),
+                              ),
+                              Wrap(
                                 alignment: WrapAlignment.center,
                                 children: [
-                                  Text('Usunąć "' + widget.scanFile.name + '"?', style: AdaptiveTheme.of(context).theme.textTheme.headline1),
-                                ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 14),
-                          child: Wrap(
-                                children: [
-                                  Text('Usunięcie pliku zapisanego w chmurze spowoduje również usunięcie pilku w chmurze. Czy na pewno usunąć?',
-                                      style: AdaptiveTheme.of(context).theme.textTheme.bodyText1),
+                                  TextButton(
+                                    child: Text('Nie', style: AdaptiveTheme
+                                        .of(context)
+                                        .theme
+                                        .textTheme
+                                        .headline1),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                  TextButton(
+                                    child: Text('Tak', style: AdaptiveTheme
+                                        .of(context)
+                                        .theme
+                                        .textTheme
+                                        .headline1),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                      widget.onRemove(index);
+                                    },
+                                  ),
                                 ],
                               ),
+                            ],
+                          )
                         ),
-                        Wrap(
-                        alignment: WrapAlignment.center,
-                        children: [
-                          TextButton(
-                            child: Text('Nie', style: AdaptiveTheme.of(context).theme.textTheme.headline1),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                          TextButton(
-                            child: Text('Tak', style: AdaptiveTheme.of(context).theme.textTheme.headline1),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              widget.onRemove(index);
-                              },
-                          ),
-                        ],
                       ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
+                );
+              } else {
+                widget.onRemove(index);
+              }
             },
           ),
           Container(
