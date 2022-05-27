@@ -28,8 +28,9 @@ class FileItemState extends State<FileItem> {
     });
     final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
     List<List<TextRecognisionBlock>> trb = [];
+    String p = await sf.getScanLocation();
     for (String file in sf.files) {
-      final InputImage image = InputImage.fromFilePath(file);
+      final InputImage image = InputImage.fromFilePath("$p/$file");
       final RecognizedText recognizedText =
           await textRecognizer.processImage(image);
       List<TextRecognisionBlock> trbList = [];
