@@ -108,9 +108,10 @@ class ScanViewState extends State<ScanView> {
                       Directory scansFolder = await Directory("$afs/$uuid/").create();
                       String aff = scansFolder.path;
                       for (String file in tempFileLocations) {
-                        String tp = "$aff/${uid.v4()}.png";
-                        File tf = File(file).renameSync(tp);
-                        location.add(tp);
+                        String pn = uid.v4();
+                        String tp = "$aff/$pn.png";
+                        File(file).renameSync(tp);
+                        location.add(pn + ".png");
                       }
                       ScanFile sf = ScanFile(
                           uuid: uuid,

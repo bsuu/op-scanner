@@ -125,9 +125,18 @@ class ItemViewState extends State<ItemView> {
                       height: heightSize,
                       width: widthSize,
                       child: ClipRRect(
-                        child: Image.file(
-                          File(widget.scanFile.files[i]),
-                          fit: BoxFit.fill,
+                        child: FutureBuilder(
+                          future: widget.scanFile.getScanLocation(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Image.file(
+                                File(
+                                    "${snapshot.data}/${widget.scanFile.files[i]}"),
+                                fit: BoxFit.fill,
+                              );
+                            }
+                            return const Text("Czekam");
+                          },
                         ),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(8)),

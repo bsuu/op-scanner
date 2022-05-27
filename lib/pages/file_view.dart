@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:archive/archive_io.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,7 @@ class FileViewState extends State<FileView> {
     return await _provider.getFiles() ?? [];
   }
 
-  void loadFilesFromClud () async {
+  void loadFilesFromClud() async {
     final user = FirebaseAuth.instance.currentUser!;
     final String? userMail = user.email;
     if (userMail == null) return;
@@ -60,7 +62,18 @@ class FileViewState extends State<FileView> {
         File tempFile = File(tempDir.path + "/" + cloudFile.name);
         await fileCloud.writeToFile(tempFile);
         await tempFile.create();
-        await OpenFile.open(tempFile.path);
+
+        final Directory scanDir = await getApplicationDocumentsDirectory();
+
+        extractFileToDisk(tempFile.path, scanDir.path + "/" + cloudFile.name);
+        File data =
+            File(scanDir.path + "/" + cloudFile.name + "/fileData.json");
+        String dataString = data.readAsStringSync();
+        ScanFile scanFile = ScanFile.fromJson(json.decoder.convert(dataString));
+
+        _provider.addFiles(scanFile);
+        setState(() {});
+        tempFile.delete();
       }
     }
   }

@@ -29,7 +29,16 @@ class ImageViewState extends State<ImageView> {
               left: 8,
               right: 8,
               bottom: 8),
-          child: Image.file(File(widget.scanFile.files[widget.index])),
+          child: FutureBuilder(
+            future: widget.scanFile.getScanLocation(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Image.file(File(
+                    "${snapshot.data}/${widget.scanFile.files[widget.index]}"));
+              }
+              return const Text("Czekam");
+            },
+          ),
         ),
         if (widget.scanFile.transcription == STATUS.DONE)
           Container(

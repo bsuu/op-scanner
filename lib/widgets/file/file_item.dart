@@ -1,4 +1,4 @@
-
+import 'dart:convert';
 import 'dart:math';
 import 'dart:io';
 import 'package:adaptive_theme/adaptive_theme.dart';
@@ -74,24 +74,31 @@ class FileItemState extends State<FileItem> {
     final user = FirebaseAuth.instance.currentUser!;
     final userMail = user.email;
     if (userMail != null) {
+      ScanFile scanFile = widget.scanFile;
+      scanFile.transcription = STATUS.NONE;
+      scanFile.cloud = STATUS.DONE;
       final storage = FirebaseStorage.instance.ref();
-      final fileName = widget.scanFile.uuid;
+      final fileName = scanFile.uuid;
       final files = storage.child("$userMail/$fileName.zip");
       final encoder = ZipFileEncoder();
       Directory tempDir = await getTemporaryDirectory();
       String tempPath = tempDir.path;
       final File file = File('$tempPath/fileData.json');
-      file.writeAsStringSync(widget.scanFile.toJson().toString());
+      file.writeAsStringSync(json.encoder.convert(scanFile));
       encoder.create('$tempPath/$fileName');
       encoder.addFile(file);
-      for (int i = 0; i < widget.scanFile.files.length; i++) {
-        encoder.addFile(File(widget.scanFile.files[i]));
+      String scanDir = await scanFile.getScanLocation();
+      for (int i = 0; i < scanFile.files.length; i++) {
+        encoder.addFile(File("$scanDir/${scanFile.files[i]}"));
       }
       encoder.close();
       final task = files.putFile(File('$tempPath/$fileName'));
       task.snapshotEvents.listen((event) {
         setState(() {
-          progress = (event.bytesTransferred.toDouble() / event.totalBytes.toDouble() * 100).toInt();
+          progress = (event.bytesTransferred.toDouble() /
+                  event.totalBytes.toDouble() *
+                  100)
+              .toInt();
         });
       });
     }
@@ -147,70 +154,64 @@ class FileItemState extends State<FileItem> {
               if (widget.scanFile.cloud == STATUS.DONE) {
                 showDialog(
                   context: context,
-                  builder: (context) =>
-                      Dialog(
-                        shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(16))),
-                        backgroundColor: AdaptiveTheme
-                            .of(context)
-                            .theme
-                            .backgroundColor,
-                        elevation: 0,
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                              right: 14, left: 14, top: 16),
-                          padding: const EdgeInsets.all(6),
-                          child: Wrap(
-                            alignment: WrapAlignment.spaceAround,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 14),
-                                child: Text('Usunąć "' + widget.scanFile.name +
-                                        '"?', style: AdaptiveTheme
-                                        .of(context)
-                                        .theme
-                                        .textTheme
-                                        .headline1),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 14),
-                                child: Text(
-                                        'Usunięcie pliku zapisanego w chmurze spowoduje również usunięcie pilku w chmurze. Czy na pewno usunąć?',
-                                        style: AdaptiveTheme
-                                            .of(context)
-                                            .theme
-                                            .textTheme
-                                            .bodyText1),
-                              ),
-                              Wrap(
-                                alignment: WrapAlignment.center,
-                                children: [
-                                  TextButton(
-                                    child: Text('Nie', style: AdaptiveTheme
-                                        .of(context)
-                                        .theme
-                                        .textTheme
-                                        .headline1),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                                  TextButton(
-                                    child: Text('Tak', style: AdaptiveTheme
-                                        .of(context)
-                                        .theme
-                                        .textTheme
-                                        .headline1),
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                      widget.onRemove(index);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                        ),
-                      ),
+                  builder: (context) => Dialog(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16))),
+                    backgroundColor:
+                        AdaptiveTheme.of(context).theme.backgroundColor,
+                    elevation: 0,
+                    child: Container(
+                        margin:
+                            const EdgeInsets.only(right: 14, left: 14, top: 16),
+                        padding: const EdgeInsets.all(6),
+                        child: Wrap(
+                          alignment: WrapAlignment.spaceAround,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 14),
+                              child: Text(
+                                  'Usunąć "' + widget.scanFile.name + '"?',
+                                  style: AdaptiveTheme.of(context)
+                                      .theme
+                                      .textTheme
+                                      .headline1),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 14),
+                              child: Text(
+                                  'Usunięcie pliku zapisanego w chmurze spowoduje również usunięcie pilku w chmurze. Czy na pewno usunąć?',
+                                  style: AdaptiveTheme.of(context)
+                                      .theme
+                                      .textTheme
+                                      .bodyText1),
+                            ),
+                            Wrap(
+                              alignment: WrapAlignment.center,
+                              children: [
+                                TextButton(
+                                  child: Text('Nie',
+                                      style: AdaptiveTheme.of(context)
+                                          .theme
+                                          .textTheme
+                                          .headline1),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                                TextButton(
+                                  child: Text('Tak',
+                                      style: AdaptiveTheme.of(context)
+                                          .theme
+                                          .textTheme
+                                          .headline1),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    widget.onRemove(index);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        )),
+                  ),
                 );
               } else {
                 widget.onRemove(index);
@@ -271,15 +272,15 @@ class FileItemState extends State<FileItem> {
                         },
                       ),
                       GestureDetector(
-                        child: FaIcon(FontAwesomeIcons.solidPaperPlane,
-                            color: getIconColor(widget.scanFile.cloud).color),
-                        onTap: () {
-                          if (progress < 0 && widget.scanFile.cloud != STATUS.DONE) {
-                            _progressTab();
-                            _sendToDatabase(widget.scanFile);
-                          }
-                        }
-                      )
+                          child: FaIcon(FontAwesomeIcons.solidPaperPlane,
+                              color: getIconColor(widget.scanFile.cloud).color),
+                          onTap: () {
+                            if (progress < 0 &&
+                                widget.scanFile.cloud != STATUS.DONE) {
+                              _progressTab();
+                              _sendToDatabase(widget.scanFile);
+                            }
+                          })
                     ],
                   ))
                 ],
