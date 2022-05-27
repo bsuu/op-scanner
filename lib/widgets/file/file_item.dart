@@ -76,7 +76,6 @@ class FileItemState extends State<FileItem> {
     final userMail = user.email;
     if (userMail != null) {
       ScanFile scanFile = widget.scanFile;
-      scanFile.transcription = STATUS.NONE;
       scanFile.cloud = STATUS.DONE;
       final storage = FirebaseStorage.instance.ref();
       final fileName = scanFile.uuid;
