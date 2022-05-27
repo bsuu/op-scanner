@@ -161,7 +161,6 @@ class FileItemState extends State<FileItem> {
                           margin: const EdgeInsets.only(
                               right: 14, left: 14, top: 16),
                           padding: const EdgeInsets.all(6),
-                          height: (MediaQuery.of(context).size.height).toDouble()/5,
                           child: Wrap(
                             alignment: WrapAlignment.spaceAround,
                             children: [
