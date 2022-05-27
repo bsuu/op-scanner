@@ -65,12 +65,16 @@ class FileViewState extends State<FileView> {
 
         final Directory scanDir = await getApplicationDocumentsDirectory();
 
-        extractFileToDisk(tempFile.path, scanDir.path + "/" + cloudFile.name);
+        await extractFileToDisk(tempFile.path, scanDir.path + "/" + cloudFile.name.replaceAll(".zip", ""));
         File data =
-            File(scanDir.path + "/" + cloudFile.name + "/fileData.json");
+            File(scanDir.path + "/" + cloudFile.name.replaceAll(".zip", "") + "/fileData.json");
+
+        Directory test = Directory(scanDir.path + "/" + cloudFile.name.replaceAll(".zip", ""));
+        print(test.listSync());
+
         String dataString = data.readAsStringSync();
         ScanFile scanFile = ScanFile.fromJson(json.decoder.convert(dataString));
-
+        print(scanFile.uuid);
         _provider.addFiles(scanFile);
         setState(() {});
         tempFile.delete();
@@ -84,7 +88,9 @@ class FileViewState extends State<FileView> {
 
   Future<void> _remove(int index) async {
     var temp = await _provider.getFiles() ?? [];
-    temp.removeAt(index);
+    ScanFile sftemp = temp.removeAt(index);
+    String dir = await sftemp.getScanLocation();
+    Directory(dir).delete(recursive: true);
     _provider.setFiles(temp);
     var data = await loadLocalData();
     setState(() {

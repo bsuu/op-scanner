@@ -32,9 +32,17 @@ class ImageViewState extends State<ImageView> {
           child: FutureBuilder(
             future: widget.scanFile.getScanLocation(),
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Image.file(File(
-                    "${snapshot.data}/${widget.scanFile.files[widget.index]}"));
+
+              if (snapshot.connectionState == ConnectionState.done) {
+
+                Directory test = Directory("${snapshot.data}");
+                print(test.listSync().last.path);
+
+                print("${snapshot.data}/${widget.scanFile.files[widget.index]}");
+                print(snapshot.error);
+                File file = File(
+                    test.listSync().last.path);
+                return Image.file(file);
               }
               return const Text("Czekam");
             },
