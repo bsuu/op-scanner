@@ -69,9 +69,6 @@ class FileViewState extends State<FileView> {
         File data =
             File(scanDir.path + "/" + cloudFile.name.replaceAll(".zip", "") + "/fileData.json");
 
-        Directory test = Directory(scanDir.path + "/" + cloudFile.name.replaceAll(".zip", ""));
-        print(test.listSync());
-
         String dataString = data.readAsStringSync();
         ScanFile scanFile = ScanFile.fromJson(json.decoder.convert(dataString));
         print(scanFile.uuid);

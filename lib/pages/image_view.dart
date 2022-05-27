@@ -35,14 +35,8 @@ class ImageViewState extends State<ImageView> {
 
               if (snapshot.connectionState == ConnectionState.done) {
 
-                Directory test = Directory("${snapshot.data}");
-                print(test.listSync().last.path);
-
                 print("${snapshot.data}/${widget.scanFile.files[widget.index]}");
-                print(snapshot.error);
-                File file = File(
-                    test.listSync().last.path);
-                return Image.file(file);
+                return Image.file(File("${snapshot.data}/${widget.scanFile.files[widget.index]}"));
               }
               return const Text("Czekam");
             },
