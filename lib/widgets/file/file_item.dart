@@ -201,7 +201,7 @@ class FileItemState extends State<FileItem> {
                             Container(
                               margin: const EdgeInsets.only(bottom: 14),
                               child: Text(
-                                  'Usunięcie pliku zapisanego w chmurze spowoduje również usunięcie pilku w chmurze. Usunięcie jest trwałe i nieodwracalne. Czy na pewno usunąć?',
+                                  'Usunięcie pliku spowoduje również usunięcie pilku w chmurze. Usunięcie jest trwałe i nieodwracalne. Czy na pewno usunąć?',
                                   style: AdaptiveTheme.of(context)
                                       .theme
                                       .textTheme
