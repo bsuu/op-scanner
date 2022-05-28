@@ -112,6 +112,28 @@ class FileItemState extends State<FileItem> {
     });
   }
 
+
+  Future<void> _removeFromDatabase(ScanFile scanFile) async {
+    final user = FirebaseAuth.instance.currentUser!;
+    final String? userMail = user.email;
+    final String name = scanFile.uuid;
+    Reference fbs = FirebaseStorage.instance.ref();
+    Reference fbsf = fbs.child("$userMail/$name.zip");
+    await fbsf.delete();
+  }
+
+  Future<void> _updateFile(ScanFile scanFile) async {
+    await _runTextRecognision(scanFile);
+    await _removeFromDatabase(scanFile);
+    await _sendToDatabase(scanFile);
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _progressTab();
+      setState(() {
+        progress = -1;
+      });
+    });
+  }
+
   void _progressTab() {
     if (state == FileItemSliderType.info) {
       return;
@@ -179,7 +201,7 @@ class FileItemState extends State<FileItem> {
                             Container(
                               margin: const EdgeInsets.only(bottom: 14),
                               child: Text(
-                                  'Usunięcie pliku zapisanego w chmurze spowoduje również usunięcie pilku w chmurze. Czy na pewno usunąć?',
+                                  'Usunięcie pliku zapisanego w chmurze spowoduje również usunięcie pilku w chmurze. Usunięcie jest trwałe i nieodwracalne. Czy na pewno usunąć?',
                                   style: AdaptiveTheme.of(context)
                                       .theme
                                       .textTheme
@@ -204,6 +226,7 @@ class FileItemState extends State<FileItem> {
                                           .headline1),
                                   onPressed: () {
                                     Navigator.pop(context);
+                                    _removeFromDatabase(widget.scanFile);
                                     widget.onRemove(index);
                                   },
                                 ),
@@ -265,7 +288,10 @@ class FileItemState extends State<FileItem> {
                             color: getIconColor(widget.scanFile.transcription)
                                 .color),
                         onTap: () {
-                          if (progress < 0) {
+                          if (progress < 0 && widget.scanFile.cloud == STATUS.DONE) {
+                            _progressTab();
+                            _updateFile(widget.scanFile);
+                          } else if (progress < 0 && widget.scanFile.cloud != STATUS.DONE) {
                             _progressTab();
                             _runTextRecognision(widget.scanFile);
                           }
@@ -273,7 +299,7 @@ class FileItemState extends State<FileItem> {
                       ),
                       GestureDetector(
                           child: FaIcon(FontAwesomeIcons.solidPaperPlane,
-                              color: getIconColor(widget.scanFile.cloud).color),
+                              color: (FirebaseAuth.instance.currentUser != null) ? getIconColor(widget.scanFile.cloud).color : AdaptiveTheme.of(context).theme.iconTheme.color),
                           onTap: () {
                             if (progress < 0 &&
                                 widget.scanFile.cloud != STATUS.DONE) {
