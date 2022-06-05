@@ -41,6 +41,12 @@ class ScanFileStorage extends ChangeNotifier {
     await setFiles(currentTemp);
   }
 
+  Future changeFile(ScanFile toChange, int index) async {
+    List<ScanFile> currentTemp = await getFiles() ?? [];
+    currentTemp[index] = toChange;
+    await setFiles(currentTemp);
+  }
+
   Future<List<ScanFile>?> getFiles() async {
     final value = await _storage.read(key: _filesKey);
     if (value == null) {

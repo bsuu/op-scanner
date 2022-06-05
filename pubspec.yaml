@@ -58,6 +58,7 @@ dependencies:
 
   skan_edge:
     path: ../skan_edge
+  printing: ^5.9.1
 
 dev_dependencies:
 

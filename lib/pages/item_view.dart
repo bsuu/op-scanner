@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
+import 'package:printing/printing.dart';
 import 'package:skan/data/scan_file.dart';
 import 'package:skan/pages/image_view.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -27,11 +28,12 @@ class ItemViewState extends State<ItemView> {
     if (kDebugMode) {
       print("Image");
     }
+    final output = await getApplicationDocumentsDirectory();
     final pdf = pw.Document();
 
     for (int i = 0; i < widget.scanFile.files.length; i++) {
       final image = pw.MemoryImage(
-        File(widget.scanFile.files[i]).readAsBytesSync(),
+        File("${output.path}/${widget.scanFile.uuid}/${widget.scanFile.files[i]}").readAsBytesSync(),
       );
       pdf.addPage(pw.Page(
         build: (pw.Context context) {
@@ -40,7 +42,7 @@ class ItemViewState extends State<ItemView> {
       ));
     }
 
-    final output = await getApplicationDocumentsDirectory();
+
     final file = File('${output.path}/${widget.scanFile.name}_scan.pdf');
     await file.writeAsBytes(await pdf.save());
     if (kDebugMode) {
@@ -54,17 +56,21 @@ class ItemViewState extends State<ItemView> {
       print("Text");
     }
     final pdf = pw.Document();
+    final font = await PdfGoogleFonts.latoRegular();
+    //Pages
     for (int i = 0; i < widget.scanFile.trb.length; i++) {
-      String lines = "";
+      List<pw.Widget> text = [];
       for (TextRecognisionBlock trb in widget.scanFile.trb[i]) {
+        String lines = "";
         for (String line in trb.lines) {
-          lines += line + '\n';
+          lines += line;
         }
-      }
+        text.add(pw.Text(lines, style: pw.TextStyle(font: font)));
+  }
       pdf.addPage(pw.Page(
           pageFormat: PdfPageFormat.a4,
           build: (pw.Context context) {
-            return pw.Text(lines); // Center
+            return pw.Column(children: text);
           }));
     }
     final output = await getApplicationDocumentsDirectory();

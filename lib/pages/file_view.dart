@@ -44,7 +44,7 @@ class FileViewState extends State<FileView> {
     if (userMail == null) return;
 
     Reference fbs = FirebaseStorage.instance.ref();
-    Reference fbsf = fbs.child("$userMail");
+    Reference fbsf = fbs.child(userMail);
     ListResult lista = await fbsf.listAll();
     var temp = await _provider.getFiles() ?? [];
     for (var cloudFile in lista.items) {
@@ -65,9 +65,12 @@ class FileViewState extends State<FileView> {
 
         final Directory scanDir = await getApplicationDocumentsDirectory();
 
-        await extractFileToDisk(tempFile.path, scanDir.path + "/" + cloudFile.name.replaceAll(".zip", ""));
-        File data =
-            File(scanDir.path + "/" + cloudFile.name.replaceAll(".zip", "") + "/fileData.json");
+        await extractFileToDisk(tempFile.path,
+            scanDir.path + "/" + cloudFile.name.replaceAll(".zip", ""));
+        File data = File(scanDir.path +
+            "/" +
+            cloudFile.name.replaceAll(".zip", "") +
+            "/fileData.json");
 
         String dataString = data.readAsStringSync();
         ScanFile scanFile = ScanFile.fromJson(json.decoder.convert(dataString));
@@ -75,6 +78,23 @@ class FileViewState extends State<FileView> {
         _provider.addFiles(scanFile);
         setState(() {});
         tempFile.delete();
+      }
+    }
+    for(int i = 0; i < temp.length; i++) {
+      ScanFile localFile = temp[i];
+      bool contains = true;
+      for (var cloudFile in lista.items) {
+        if (!cloudFile.fullPath.contains(localFile.uuid)) {
+          contains = false;
+          break;
+        }
+      }
+      if (contains && localFile.cloud == STATUS.DONE) {
+        print("Siema w lokalu a nie w cloudzie ${localFile.cloud}");
+        localFile.cloud = STATUS.NONE;
+        print("Siema w lokalu a nie w cloudzie ${localFile.cloud}");
+        _provider.changeFile(localFile, i);
+        setState(() {});
       }
     }
   }
